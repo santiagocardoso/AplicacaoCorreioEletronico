@@ -10,14 +10,14 @@ public class Email {
     public Usuario getRemetente() {
         return remetente;
     }
-    public void setRemetente(Usuario remetente) {
-        this.remetente = remetente;
+    public void setRemetente(String remetente) {
+        this.remetente.setEnderecoEmail(remetente);
     }
     public Usuario getDestinatario() {
         return destinatario;
     }
-    public void setDestinatario(Usuario destinatario) {
-        this.destinatario = destinatario;
+    public void setDestinatario(String destinatario) {
+        this.destinatario.setEnderecoEmail(destinatario);
     }
     public String getCorpo() {
         return corpo;
