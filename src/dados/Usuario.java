@@ -1,10 +1,13 @@
 package dados;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
     private String usuario;
     private String email;
     private String senha;
-    private Email emails = new Email[];
+    private List<Email> emails = new ArrayList<Email>();
     private int quantEmails = 0;
 
     public String getUsuario() {
@@ -26,6 +29,28 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public int getQuantEmails() {
+        return quantEmails;
+    }
+    public List<Email> getEmails() {
+        return emails;
+    }
+    public void adicionarEmail(Email email) {
+        if (!(emails.contains(email))) {
+            emails.add(email);
+            quantEmails++;
+        }
+        else
+            return;
+    }
+    public void removerEmail(Email email) {
+        if (emails.contains(email)) {
+            emails.remove(email);
+            quantEmails--;
+        }
+        else
+            return;
+    }
     public String toString() {
         return this.usuario + " | " + this.email;
     }
