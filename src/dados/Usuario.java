@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Usuario {
     private String usuario;
-    private String email;
+    private String enderecoEmail;
     private String senha;
     private List<Email> emails = new ArrayList<Email>();
     private int quantEmails = 0;
@@ -16,11 +16,11 @@ public class Usuario {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    public String getEmail() {
-        return email;
+    public String getEnderecoEmail() {
+        return enderecoEmail;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEnderecoEmail(String enderecoEmail) {
+        this.enderecoEmail = enderecoEmail;
     }
     public String getSenha() {
         return senha;
@@ -28,39 +28,47 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
     public int getQuantEmails() {
         return quantEmails;
     }
     public List<Email> getEmails() {
         return emails;
     }
-    public void adicionarEmail(Email email) {
+
+    public boolean adicionarEmail(Email email) {
         if (!(emails.contains(email))) {
             emails.add(email);
             quantEmails++;
+            return true;
         }
         else
-            return;
+            return false;
     }
-    public void removerEmail(Email email) {
+    public boolean removerEmail(Email email) {
         if (emails.contains(email)) {
             emails.remove(email);
             quantEmails--;
+            return true;
         }
         else
-            return;
+            return false;
+    }
+    public Email buscarEmail(Email email) {
+        for (Email e : emails) {
+            if (email.equals(e))
+                return e;
+        }
+        return null;
     }
     public String toString() {
-        return this.usuario + " | " + this.email;
+        return this.usuario + " | " + this.enderecoEmail;
     }
     public boolean equals(Object o) {
         Usuario u;
         if (!(o instanceof Usuario))
             return false;
         u = (Usuario) o;
-        if (this.usuario.equals(u.getUsuario()) 
-        && this.email.equals(u.getEmail()))
+        if (this.enderecoEmail.equals(u.getEnderecoEmail()))
             return true;
         return false;
     }
