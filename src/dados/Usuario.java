@@ -4,6 +4,8 @@ public class Usuario {
     private String usuario;
     private String email;
     private String senha;
+    private Email emails = new Email[];
+    private int quantEmails = 0;
 
     public String getUsuario() {
         return usuario;
@@ -25,7 +27,7 @@ public class Usuario {
     }
 
     public String toString() {
-        return "a";
+        return this.usuario + " | " + this.email;
     }
     public boolean equals(Object o) {
         Usuario u;

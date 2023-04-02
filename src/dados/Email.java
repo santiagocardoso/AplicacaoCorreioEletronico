@@ -39,7 +39,7 @@ public class Email {
     }
 
     public String toString() {
-        return "a";
+        return this.remetente.toString() + this.destinatario.toString() + "\nMensagem: " + this.corpo + "\nData: " + this.data + "\nHora: " + this.hora;
     }
     public boolean equals(Object o) {
         Email e;
