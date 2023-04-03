@@ -165,7 +165,7 @@ public class Main {
         sistema.cadastrarUsuario(u2);
         Email email1 = new Email("santcar7@gmail.com", "jaiza@gmail.com", "isso eh um email de teste!", "03/04/2023", "00:01");
         u2.adicionarEmail(email1);
-        Email email2 = new Email("jaiza@gmail.com", "santcar7@gmail.com", "a d z", "03/04/2023", "00:02");
+        Email email2 = new Email("jaiza@gmail.com", "santcar7@gmail.com", "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z", "03/04/2023", "00:02");
         u1.adicionarEmail(email2);
 
         int opcao = -1;

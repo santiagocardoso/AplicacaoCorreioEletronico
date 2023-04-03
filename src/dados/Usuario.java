@@ -49,10 +49,20 @@ public class Usuario {
         for (int i = 0; i < mensagem.length(); i++) {
             if (!(Character.isLetter(mensagem.charAt(i))))
                 encriptado += mensagem.charAt(i);
-            else if (mensagem.charAt(i) + cifra > 122)
-                encriptado += (char)(mensagem.charAt(i) + cifra - 26);
-            else
-                encriptado += (char)(mensagem.charAt(i) + cifra);
+            else {
+                if (!(Character.isUpperCase(mensagem.charAt(i)))) {
+                    if (mensagem.charAt(i) + cifra > 122)
+                        encriptado += (char)(mensagem.charAt(i) + cifra - 26);
+                    else
+                        encriptado += (char)(mensagem.charAt(i) + cifra);
+                }
+                else {
+                    if (mensagem.charAt(i) + cifra > 90)
+                        encriptado += (char)(mensagem.charAt(i) + cifra - 26);
+                    else
+                        encriptado += (char)(mensagem.charAt(i) + cifra);    
+                }
+            }
         }
         return encriptado;
     }
@@ -61,13 +71,25 @@ public class Usuario {
         for (int i = 0; i < mensagem.length(); i++) {
             if (!(Character.isLetter(mensagem.charAt(i))))
                 descriptado += mensagem.charAt(i);
-            else if (mensagem.charAt(i) - cifra < 97)
-                descriptado += (char)(mensagem.charAt(i) - cifra + 26);
-            else
-                descriptado += (char)(mensagem.charAt(i) - cifra);
+            else {
+                if (!(Character.isUpperCase(mensagem.charAt(i)))) {
+                    if (mensagem.charAt(i) - cifra < 97)
+                        descriptado += (char)(mensagem.charAt(i) - cifra + 26);
+                    else
+                        descriptado += (char)(mensagem.charAt(i) - cifra);
+                }
+                else {
+                    if (mensagem.charAt(i) - cifra < 65)
+                        descriptado += (char)(mensagem.charAt(i) - cifra + 26);
+                    else
+                        descriptado += (char)(mensagem.charAt(i) - cifra);    
+                }
+            }
         }
         return descriptado;
     }
+    // a b c d e f g h i j k l m n o p q r s t u v w x y z
+    // A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
     public void cifraCesar(Email email, boolean modo) {
         int id = email.getId();
         int dia = ((int) email.getData().charAt(0) - '0') + ((int) email.getData().charAt(1) - '0');
