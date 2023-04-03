@@ -53,11 +53,8 @@ public class Main {
         sistema.enviarEmail(e);
     }
     public static void mostrarEmails(Usuario usuario) {
-        int i = 0;
-        for (Email e : usuario.getEmails())  {
-            System.out.println("[" + i + "] " + e.toString());
-            i++;
-        }
+        for (Email e : usuario.getEmails())
+            System.out.println(e.toString());
     }
     public static void responderEmail(Usuario usuario) {
         System.out.println("Selecione o email que deseja responder:");
@@ -80,14 +77,20 @@ public class Main {
         sistema.enviarEmail(enviar);
     }
     public static void removerEmail(Usuario usuario) {
-        System.out.println("Selecione o email que deseja remover:");
+        System.out.println("Selecione a ID do email que deseja remover:");
         mostrarEmails(usuario);
         int opcao = Integer.parseInt(scan.nextLine());
         usuario.removerEmail(usuario.getEmails().get(opcao));
     }
     public static void descriptarEmails(Usuario usuario) {
-        for (Email e : usuario.getEmails())
-            usuario.cifraCesar(e, false);
+        sistema.descriptarEmails(usuario);
+    }
+    public static void mostrarUsuarios() {
+        int i = 0;
+        for (Usuario u : sistema.getUsuarios()) {
+            System.out.println("[" + i + "] " + u.toString());
+            i++;
+        }
     }
     public static void login() {
         System.out.println("Digite seu email:");
@@ -131,13 +134,6 @@ public class Main {
             return;
         }
     }
-    public static void mostrarUsuarios() {
-        int i = 0;
-        for (Usuario u : sistema.getUsuarios()) {
-            System.out.println("[" + i + "] " + u.toString());
-            i++;
-        }
-    }
     public static void userMenu() {
         System.out.println("-=-=-=-=-=-=-=-=-=-=-");
         System.out.println("Selecione uma opção:");
@@ -165,7 +161,7 @@ public class Main {
         Usuario u2 = new Usuario("Jaiza", "jaiza@gmail.com", "321");
         sistema.cadastrarUsuario(u1);
         sistema.cadastrarUsuario(u2);
-        Email email1 = new Email("santcar7@gmail.com", "jaiza@gmail.com", "isso é um email de teste!", "03/04/2023", "00:01");
+        Email email1 = new Email("santcar7@gmail.com", "jaiza@gmail.com", "isso eh um email de teste!", "03/04/2023", "00:01");
         u2.adicionarEmail(email1);
         Email email2 = new Email("jaiza@gmail.com", "santcar7@gmail.com", "a d z", "03/04/2023", "00:02");
         u1.adicionarEmail(email2);

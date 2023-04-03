@@ -6,6 +6,7 @@ public class Email {
     private String corpo;
     private String data;
     private String hora;
+    private int id;
 
     public Email() {
 
@@ -23,6 +24,7 @@ public class Email {
         this.corpo = copia.corpo;
         this.data = copia.data;
         this.hora = copia.hora;
+        this.id = copia.id;
     }
 
     public String getRemetente() {
@@ -55,9 +57,15 @@ public class Email {
     public void setHora(String hora) {
         this.hora = hora;
     }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String toString() {
-        return "\nRemetente: " + this.remetente + "\nDestinatario: " + this.destinatario + "\nMensagem: " + this.corpo + "\nData: " + this.data + "\nHora: " + this.hora;
+        return "Email [" + this.id + "]" + "\nRemetente: " + this.remetente + "\nDestinatario: " + this.destinatario + "\nMensagem: " + this.corpo + "\nData: " + this.data + "\nHora: " + this.hora;
     }
     public boolean equals(Object o) {
         Email e;
@@ -65,10 +73,11 @@ public class Email {
             return false;
         e = (Email) o;
         if (this.remetente.equals(e.getRemetente()) 
-        & this.destinatario.equals(e.getDestinatario()) 
-        & this.corpo.equals(e.getCorpo()) 
-        & this.data.equals(e.getData()) 
-        & this.hora.equals(e.getHora()))
+        && this.destinatario.equals(e.getDestinatario()) 
+        && this.corpo.equals(e.getCorpo()) 
+        && this.data.equals(e.getData()) 
+        && this.hora.equals(e.getHora()) 
+        && this.id == e.getId())
             return true;
         return false;
     }

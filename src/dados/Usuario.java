@@ -69,11 +69,11 @@ public class Usuario {
         return descriptado;
     }
     public void cifraCesar(Email email, boolean modo) {
-        int id = emails.indexOf(email);
+        int id = email.getId();
         int dia = ((int) email.getData().charAt(0) - '0') + ((int) email.getData().charAt(1) - '0');
 
         if (modo) {
-            int cifra = id + dia + 1;
+            int cifra = id + dia;
             email.setCorpo(encriptar(email.getCorpo(), cifra));
         }
         else {
@@ -82,8 +82,9 @@ public class Usuario {
         }
     }
     public boolean adicionarEmail(Email email) {
-        // cifraCesar(email, true); // armazena a mensagem com a cifra de Cesar
         if (!(emails.contains(email))) {
+            email.setId(quantEmails);
+            cifraCesar(email, true); // armazena a mensagem com a cifra de Cesar
             emails.add(email);
             quantEmails++;
             return true;
