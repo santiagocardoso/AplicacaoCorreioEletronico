@@ -17,6 +17,13 @@ public class Email {
         this.data = data;
         this.hora = hora;
     }
+    public Email(Email copia) {
+        this.remetente = copia.remetente;
+        this.destinatario = copia.destinatario;
+        this.corpo = copia.corpo;
+        this.data = copia.data;
+        this.hora = copia.hora;
+    }
 
     public String getRemetente() {
         return remetente;

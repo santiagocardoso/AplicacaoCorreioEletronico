@@ -32,10 +32,10 @@ public class Sistema {
         return false;
     }
     public boolean enviarEmail(Email email) {
-        Usuario destinatario = buscarUsuario(email.getDestinatario().getEnderecoEmail());
-        if (destinatario.getEnderecoEmail().equals(email.getDestinatario().getEnderecoEmail()) 
+        Usuario destinatario = buscarUsuario(email.getDestinatario());
+        if (destinatario.getEnderecoEmail().equals(email.getDestinatario()) 
         && destinatario != null) {
-            email.getDestinatario().adicionarEmail(email);
+            destinatario.adicionarEmail(email);
             return true;
         }
         return false;
