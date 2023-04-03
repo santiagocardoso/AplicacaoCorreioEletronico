@@ -85,6 +85,10 @@ public class Main {
         int opcao = Integer.parseInt(scan.nextLine());
         usuario.removerEmail(usuario.getEmails().get(opcao));
     }
+    public static void descriptarEmails(Usuario usuario) {
+        for (Email e : usuario.getEmails())
+            usuario.cifraCesar(e, false);
+    }
     public static void login() {
         System.out.println("Digite seu email:");
         String email = scan.nextLine();
@@ -108,9 +112,12 @@ public class Main {
                     mostrarEmails(usuario);
                     break;
                 case 3:
-                    responderEmail(usuario);
+                    descriptarEmails(usuario);
                     break;
                 case 4:
+                    responderEmail(usuario);
+                    break;
+                case 5:
                     removerEmail(usuario);
                     break;
                 default:
@@ -137,8 +144,9 @@ public class Main {
         System.out.println("[0] Sair");
         System.out.println("[1] Enviar email");
         System.out.println("[2] Mostrar emails");
-        System.out.println("[3] Responder email");
-        System.out.println("[4] Remover email");
+        System.out.println("[3] Descriptar emails");
+        System.out.println("[4] Responder email");
+        System.out.println("[5] Remover email");
         System.out.println("-=-=-=-=-=-=-=-=-=-=-");
     }
     public static void menu() {
@@ -159,7 +167,7 @@ public class Main {
         sistema.cadastrarUsuario(u2);
         Email email1 = new Email("santcar7@gmail.com", "jaiza@gmail.com", "isso é um email de teste!", "03/04/2023", "00:01");
         u2.adicionarEmail(email1);
-        Email email2 = new Email("jaiza@gmail.com", "santcar7@gmail.com", "oie santi!", "03/04/2023", "00:02");
+        Email email2 = new Email("jaiza@gmail.com", "santcar7@gmail.com", "a d z", "03/04/2023", "00:02");
         u1.adicionarEmail(email2);
 
         int opcao = -1;

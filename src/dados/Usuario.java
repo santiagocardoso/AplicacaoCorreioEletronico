@@ -44,7 +44,45 @@ public class Usuario {
         return emails;
     }
 
+    public String encriptar(String mensagem, int cifra) {
+        String encriptado = "";
+        for (int i = 0; i < mensagem.length(); i++) {
+            if (!(Character.isLetter(mensagem.charAt(i))))
+                encriptado += mensagem.charAt(i);
+            else if (mensagem.charAt(i) + cifra > 122)
+                encriptado += (char)(mensagem.charAt(i) + cifra - 26);
+            else
+                encriptado += (char)(mensagem.charAt(i) + cifra);
+        }
+        return encriptado;
+    }
+    public String descriptar(String mensagem, int cifra) {
+        String descriptado = "";
+        for (int i = 0; i < mensagem.length(); i++) {
+            if (!(Character.isLetter(mensagem.charAt(i))))
+                descriptado += mensagem.charAt(i);
+            else if (mensagem.charAt(i) - cifra < 97)
+                descriptado += (char)(mensagem.charAt(i) - cifra + 26);
+            else
+                descriptado += (char)(mensagem.charAt(i) - cifra);
+        }
+        return descriptado;
+    }
+    public void cifraCesar(Email email, boolean modo) {
+        int id = emails.indexOf(email);
+        int dia = ((int) email.getData().charAt(0) - '0') + ((int) email.getData().charAt(1) - '0');
+
+        if (modo) {
+            int cifra = id + dia + 1;
+            email.setCorpo(encriptar(email.getCorpo(), cifra));
+        }
+        else {
+            int cifra = id + dia;
+            email.setCorpo(descriptar(email.getCorpo(), cifra));
+        }
+    }
     public boolean adicionarEmail(Email email) {
+        // cifraCesar(email, true); // armazena a mensagem com a cifra de Cesar
         if (!(emails.contains(email))) {
             emails.add(email);
             quantEmails++;
