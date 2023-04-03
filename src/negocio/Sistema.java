@@ -19,21 +19,22 @@ public class Sistema {
     }
     public Usuario buscarUsuario(String email) {
         for (Usuario u : usuarios)
-            if (u.getEnderecoEmail() == email)
+            if (u.getEnderecoEmail().equals(email))
                 return u;
         return null;
     }
     public boolean loginUsuario(String enderecoEmail, String senha) {
         Usuario idUsuario = buscarUsuario(enderecoEmail);
-        if (idUsuario.getEnderecoEmail() == enderecoEmail 
-        && idUsuario.getSenha() == senha 
+        if (idUsuario.getEnderecoEmail().equals(enderecoEmail) 
+        && idUsuario.getSenha().equals(senha) 
         && idUsuario != null)
             return true;
         return false;
     }
     public boolean enviarEmail(Email email) {
         Usuario destinatario = buscarUsuario(email.getDestinatario().getEnderecoEmail());
-        if (destinatario.getEnderecoEmail() == email.getDestinatario().getEnderecoEmail() && destinatario != null) {
+        if (destinatario.getEnderecoEmail().equals(email.getDestinatario().getEnderecoEmail()) 
+        && destinatario != null) {
             email.getDestinatario().adicionarEmail(email);
             return true;
         }

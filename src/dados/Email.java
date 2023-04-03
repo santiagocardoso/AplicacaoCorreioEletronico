@@ -1,23 +1,34 @@
 package dados;
 
 public class Email {
-    private Usuario remetente;
-    private Usuario destinatario;
+    private String remetente;
+    private String destinatario;
     private String corpo;
     private String data;
     private String hora;
 
-    public Usuario getRemetente() {
+    public Email() {
+
+    }
+    public Email(String remetente, String destinatario, String corpo, String data, String hora) {
+        this.remetente = remetente;
+        this.destinatario = destinatario;
+        this.corpo = corpo;
+        this.data = data;
+        this.hora = hora;
+    }
+
+    public String getRemetente() {
         return remetente;
     }
     public void setRemetente(String remetente) {
-        this.remetente.setEnderecoEmail(remetente);
+        this.remetente = remetente;
     }
-    public Usuario getDestinatario() {
+    public String getDestinatario() {
         return destinatario;
     }
     public void setDestinatario(String destinatario) {
-        this.destinatario.setEnderecoEmail(destinatario);
+        this.destinatario = destinatario;
     }
     public String getCorpo() {
         return corpo;
@@ -39,7 +50,7 @@ public class Email {
     }
 
     public String toString() {
-        return this.remetente.toString() + this.destinatario.toString() + "\nMensagem: " + this.corpo + "\nData: " + this.data + "\nHora: " + this.hora;
+        return "\nRemetente: " + this.remetente + "\nDestinatario: " + this.destinatario + "\nMensagem: " + this.corpo + "\nData: " + this.data + "\nHora: " + this.hora;
     }
     public boolean equals(Object o) {
         Email e;

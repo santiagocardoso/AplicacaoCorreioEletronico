@@ -10,6 +10,15 @@ public class Usuario {
     private List<Email> emails = new ArrayList<Email>();
     private int quantEmails = 0;
 
+    public Usuario() {
+
+    }
+    public Usuario(String usuario, String enderencoEmail, String senha) {
+        this.usuario = usuario;
+        this.enderecoEmail = enderencoEmail;
+        this.senha = senha;
+    }
+
     public String getUsuario() {
         return usuario;
     }

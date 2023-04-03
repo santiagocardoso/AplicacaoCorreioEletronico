@@ -63,7 +63,7 @@ public class Main {
         System.out.println("Selecione o email que deseja remover:");
         mostrarEmails(usuario);
         int opcao = Integer.parseInt(scan.nextLine());
-        usuario.removerEmail(opcao);
+        usuario.removerEmail(usuario.getEmails().get(opcao));
     }
     public static void login() {
         System.out.println("Digite seu email:");
@@ -71,15 +71,11 @@ public class Main {
         System.out.println("Digite sua senha:");
         String senha = scan.nextLine();
 
-        if (!(sistema.loginUsuario(email, senha))) {
-            System.out.println("Endereço de email ou senha errados!");
-            return;
-        }
-        else {
+        if (sistema.loginUsuario(email, senha)) {
             Usuario usuario = sistema.buscarUsuario(email);
             int opcao = -1;
             while (opcao != 0) {
-            menu();
+            userMenu();
             opcao = Integer.parseInt(scan.nextLine());
             switch (opcao) {
                 case 0:
@@ -94,8 +90,19 @@ public class Main {
                 default:
                     System.out.println("Opção inválida!");
                     break;
+                }
             }
         }
+        else {
+            System.out.println("Endereço de email ou senha errados!");
+            return;
+        }
+    }
+    public static void mostrarUsuarios() {
+        int i = 0;
+        for (Usuario u : sistema.getUsuarios()) {
+            System.out.println("[" + i + "] " + u.toString());
+            i++;
         }
     }
     public static void userMenu() {
@@ -111,11 +118,18 @@ public class Main {
         System.out.println("Selecione uma opção:");
         System.out.println("[0] Sair");
         System.out.println("[1] Cadastrar usuario");
-        System.out.println("[2] Efetuar login");
+        System.out.println("[2] Mostrar usuarios");
+        System.out.println("[3] Efetuar login");
         System.out.println("-=-=-=-=-=-=-=-=-=-=-");
     }
 
     public static void main(String[] args) {
+        // test
+        Usuario u1 = new Usuario("Santiago", "santcar7@gmail.com", "123");
+        Usuario u2 = new Usuario("Jaiza", "jaiza@gmail.com", "321");
+        sistema.cadastrarUsuario(u1);
+        sistema.cadastrarUsuario(u2);
+
         int opcao = -1;
         while (opcao != 0) {
             menu();
@@ -128,6 +142,9 @@ public class Main {
                     cadastrarUsuario();
                     break;
                 case 2:
+                    mostrarUsuarios();
+                    break;
+                case 3:
                     login();
                     break;
                 default:
