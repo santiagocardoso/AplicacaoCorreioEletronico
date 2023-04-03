@@ -40,8 +40,7 @@ public class Sistema {
         }
         return false;
     }
-    public void descriptarEmails(Usuario usuario) {
-        for (Email e : usuario.getEmails())
-            usuario.cifraCesar(e, false);
+    public void descriptarEmail(Usuario usuario, Email email) {
+        usuario.cifraCesar(email, false);
     }
 }

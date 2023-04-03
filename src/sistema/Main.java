@@ -83,7 +83,9 @@ public class Main {
         usuario.removerEmail(usuario.getEmails().get(opcao));
     }
     public static void descriptarEmails(Usuario usuario) {
-        sistema.descriptarEmails(usuario);
+        mostrarEmails(usuario);
+        int opcao = Integer.parseInt(scan.nextLine());
+        sistema.descriptarEmail(usuario, usuario.getEmails().get(opcao));
     }
     public static void mostrarUsuarios() {
         int i = 0;
