@@ -44,6 +44,33 @@ public class Usuario {
         return emails;
     }
 
+    public boolean adicionarEmail(Email email) {
+        if (!(emails.contains(email))) {
+            email.setId(quantEmails);
+            cifraCesar(email, true); // armazena a mensagem com a cifra de Cesar
+            emails.add(email);
+            quantEmails++;
+            return true;
+        }
+        else
+            return false;
+    }
+    public boolean removerEmail(Email email) {
+        if (emails.contains(email)) {
+            emails.remove(email);
+            quantEmails--;
+            return true;
+        }
+        else
+            return false;
+    }
+    public Email buscarEmail(Email email) {
+        for (Email e : emails) {
+            if (email.equals(e))
+                return e;
+        }
+        return null;
+    }
     public String encriptar(String mensagem, int cifra) {
         String encriptado = "";
         for (int i = 0; i < mensagem.length(); i++) {
@@ -102,33 +129,6 @@ public class Usuario {
             int cifra = id + dia;
             email.setCorpo(descriptar(email.getCorpo(), cifra));
         }
-    }
-    public boolean adicionarEmail(Email email) {
-        if (!(emails.contains(email))) {
-            email.setId(quantEmails);
-            cifraCesar(email, true); // armazena a mensagem com a cifra de Cesar
-            emails.add(email);
-            quantEmails++;
-            return true;
-        }
-        else
-            return false;
-    }
-    public boolean removerEmail(Email email) {
-        if (emails.contains(email)) {
-            emails.remove(email);
-            quantEmails--;
-            return true;
-        }
-        else
-            return false;
-    }
-    public Email buscarEmail(Email email) {
-        for (Email e : emails) {
-            if (email.equals(e))
-                return e;
-        }
-        return null;
     }
     public String toString() {
         return this.usuario + " | " + this.enderecoEmail;
