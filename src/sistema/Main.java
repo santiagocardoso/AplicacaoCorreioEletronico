@@ -32,12 +32,10 @@ public class Main {
             opcao = scan.nextLine().charAt(0);
         }
     }
-    public static void novoEmail() {
+    public static void novoEmail(Usuario usuario) {
         Email e = new Email();
 
-        System.out.println("Remetente:");
-        String remetente = scan.nextLine();
-        e.setRemetente(remetente);
+        e.setRemetente(usuario.getEnderecoEmail());
         System.out.println("Destinatário:");
         String destinatario = scan.nextLine();
         e.setDestinatario(destinatario);
@@ -111,7 +109,7 @@ public class Main {
                     System.out.println("Saindo...");
                     break;
                 case 1:
-                    novoEmail();
+                    novoEmail(usuario);
                     break;
                 case 2:
                     mostrarEmails(usuario);
