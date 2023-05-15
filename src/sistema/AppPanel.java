@@ -13,7 +13,7 @@ public class AppPanel extends JPanel implements Runnable {
 
     Thread appThread;
 
-    //***********************painelEntrada**********************/
+    //***painelEntrada***/
     private JPanel painelEntrada = new JPanel();
 
     JLabel welcomeCaixaTexto = new JLabel("Bem vindo!");
@@ -21,12 +21,11 @@ public class AppPanel extends JPanel implements Runnable {
     private JButton botaoCadastro = new JButton("CADASTRO");
     private JButton botaoMostrar = new JButton("MOSTRAR USUARIOS");
     private JButton botaoLogin = new JButton("LOGIN");
-    //************************************************************/
 
-    //***********************painelLogin***********************/
+    //***painelLogin***/
     private JPanel painelLogin = new JPanel();
 
-    JLabel infoCaixaTexto = new JLabel("LOGIN");
+    JLabel infoLoginCaixaTexto = new JLabel("LOGIN");
 
     JLabel loginCaixaTexto = new JLabel("Email:");
     private JTextField userLoginCaixaTexto = new JTextField("user@email.com");
@@ -35,7 +34,31 @@ public class AppPanel extends JPanel implements Runnable {
     private JTextField userSenhaCaixaTexto = new JTextField("password");
 
     private JButton botaoEntrar = new JButton("ENTRAR");
-    //************************************************************/
+    private JButton botaoLoginReturn = new JButton("<--");
+
+    //***painelCadastro***/
+    private JPanel painelCadastro = new JPanel();
+
+    JLabel infoCadastroCaixaTexto = new JLabel("CADASTRO");
+
+    JLabel cadastroNomeCaixaTexto = new JLabel("Nome:");
+    private JTextField userCadastroNomeCaixaTexto = new JTextField("Nome Sobrenome");
+
+    JLabel cadastroLoginCaixaTexto = new JLabel("Email:");
+    private JTextField userCadastroLoginCaixaTexto = new JTextField("user@email.com");
+
+    JLabel cadastroSenhaCaixaTexto = new JLabel("Senha:");
+    private JTextField userCadastroSenhaCaixaTexto = new JTextField("password");
+
+    private JButton botaoCadastrar = new JButton("CADASTRAR");
+    private JButton botaoCadastroReturn = new JButton("<--");
+
+    //***painelMostrar***/
+    private JPanel painelMostrar = new JPanel();
+
+    JLabel infoMostrarCaixaTexto = new JLabel("MOSTRAR USUÁRIOS");
+
+    private JButton botaoMostrarReturn = new JButton("<--");
     
     AppPanel() {
         this.setLayout(null);
@@ -51,42 +74,47 @@ public class AppPanel extends JPanel implements Runnable {
         welcomeCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
         painelEntrada.add(welcomeCaixaTexto);
 
-        botaoCadastro.setBounds(MEIO - 100, 150, 200, 25);
+        botaoCadastro.setBounds(MEIO - 100, 175, 200, 25);
         botaoCadastro.setFont(new Font("Arial", Font.PLAIN, 15));
         painelEntrada.add(botaoCadastro);
 
         botaoCadastro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                painelEntrada.setBounds(0, 0, 0, 0);
+                painelCadastro.setBounds(0, 0, LARGURA, ALTURA);
             }
         });
 
-        botaoMostrar.setBounds(MEIO - 100, 200, 200, 25);
+        botaoMostrar.setBounds(MEIO - 100, 225, 200, 25);
         botaoMostrar.setFont(new Font("Arial", Font.PLAIN, 15));
         painelEntrada.add(botaoMostrar);
 
         botaoMostrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                painelEntrada.setBounds(0, 0, 0, 0);
+                painelMostrar.setBounds(0, 0, LARGURA, ALTURA);
             }
         });
 
-        botaoLogin.setBounds(MEIO - 100, 250, 200, 25);
+        botaoLogin.setBounds(MEIO - 100, 275, 200, 25);
         botaoLogin.setFont(new Font("Arial", Font.PLAIN, 15));
         painelEntrada.add(botaoLogin);
 
         botaoLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                painelEntrada.setBounds(0, 0, 0, 0);
+                painelLogin.setBounds(0, 0, LARGURA, ALTURA);
             }
         });
     //************************************************************/
 
     //***********************painelLogin***********************/
-        painelLogin.setBounds(0, 0, LARGURA, ALTURA);
         painelLogin.setLayout(null);
         this.add(painelLogin);
 
-        infoCaixaTexto.setBounds(MEIO - 50, 0, 100, 100);
-        infoCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
-        painelLogin.add(infoCaixaTexto);
+        infoLoginCaixaTexto.setBounds(MEIO - 50, 0, 100, 100);
+        infoLoginCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
+        painelLogin.add(infoLoginCaixaTexto);
 
         loginCaixaTexto.setBounds(MEIO - 100, 100, 100, 100);
         loginCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -126,7 +154,112 @@ public class AppPanel extends JPanel implements Runnable {
                 userSenhaCaixaTexto.setText("");
             }
         });
+
+        botaoLoginReturn.setBounds(10, 10, 75, 25);
+        botaoLoginReturn.setFont(new Font("Arial", Font.BOLD, 15));
+        painelLogin.add(botaoLoginReturn);
+
+        botaoLoginReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                painelEntrada.setBounds(0, 0, LARGURA, ALTURA);
+                painelLogin.setBounds(0, 0, 0, 0);
+            }
+        });
     //************************************************************/
+
+    //***********************painelCadastro**********************/
+        painelCadastro.setLayout(null);
+        this.add(painelCadastro);
+
+        infoCadastroCaixaTexto.setBounds(MEIO - 100 + 15, 0, 200, 100);
+        infoCadastroCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
+        painelCadastro.add(infoCadastroCaixaTexto);
+
+        cadastroNomeCaixaTexto.setBounds(MEIO - 100, 75, 100, 100);
+        cadastroNomeCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 15));
+        painelCadastro.add(cadastroNomeCaixaTexto);
+        userCadastroNomeCaixaTexto.setBounds(MEIO - 100, 150, 200, 20);
+        painelCadastro.add(userCadastroNomeCaixaTexto);
+
+        userCadastroNomeCaixaTexto.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                JTextField source = (JTextField)e.getComponent();
+                source.setText("");
+                source.removeFocusListener(this);
+            }
+        });
+
+        cadastroLoginCaixaTexto.setBounds(MEIO - 100, 175, 100, 100);
+        cadastroLoginCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 15));
+        painelCadastro.add(cadastroLoginCaixaTexto);
+        userCadastroLoginCaixaTexto.setBounds(MEIO - 100, 250, 200, 20);
+        painelCadastro.add(userCadastroLoginCaixaTexto);
+
+        userCadastroLoginCaixaTexto.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                JTextField source = (JTextField)e.getComponent();
+                source.setText("");
+                source.removeFocusListener(this);
+            }
+        });
+
+        cadastroSenhaCaixaTexto.setBounds(MEIO - 100, 275, 100, 100);
+        cadastroSenhaCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 15));
+        painelCadastro.add(cadastroSenhaCaixaTexto);
+        userCadastroSenhaCaixaTexto.setBounds(MEIO - 100, 350, 200, 20);
+        painelCadastro.add(userCadastroSenhaCaixaTexto);
+
+        userCadastroSenhaCaixaTexto.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                JTextField source = (JTextField)e.getComponent();
+                source.setText("");
+                source.removeFocusListener(this);
+            }
+        });
+
+        botaoCadastrar.setBounds(MEIO - 100, 425, 200, 25);
+        botaoCadastrar.setFont(new Font("Arial", Font.PLAIN, 15));
+        painelCadastro.add(botaoCadastrar);
+
+        botaoCadastrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                userCadastroNomeCaixaTexto.setText("");
+                userCadastroLoginCaixaTexto.setText("");
+                userCadastroSenhaCaixaTexto.setText("");
+            }
+        });
+
+        botaoCadastroReturn.setBounds(10, 10, 75, 25);
+        botaoCadastroReturn.setFont(new Font("Arial", Font.BOLD, 15));
+        painelCadastro.add(botaoCadastroReturn);
+
+        botaoCadastroReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                painelEntrada.setBounds(0, 0, LARGURA, ALTURA);
+                painelCadastro.setBounds(0, 0, 0, 0);
+            }
+        });
+    //***********************************************************/
+
+    //***********************painelMostrar***********************/
+        painelMostrar.setLayout(null);
+        this.add(painelMostrar);
+
+        infoMostrarCaixaTexto.setBounds(MEIO - 200 + 40, 0, 400, 100);
+        infoMostrarCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
+        painelMostrar.add(infoMostrarCaixaTexto);
+
+        botaoMostrarReturn.setBounds(10, 10, 75, 25);
+        botaoMostrarReturn.setFont(new Font("Arial", Font.BOLD, 15));
+        painelMostrar.add(botaoMostrarReturn);
+
+        botaoMostrarReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                painelEntrada.setBounds(0, 0, LARGURA, ALTURA);
+                painelMostrar.setBounds(0, 0, 0, 0);
+            }
+        });
+    //***********************************************************/
 
         appThread = new Thread(this);
         appThread.start();
