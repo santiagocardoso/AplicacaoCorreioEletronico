@@ -58,6 +58,10 @@ public class AppPanel extends JPanel implements Runnable {
 
     JLabel infoMostrarCaixaTexto = new JLabel("MOSTRAR USUÁRIOS");
 
+    private JScrollPane painelScrollMostrarUsuarios = new JScrollPane();
+
+    private JTable tabelaUsuarios;
+
     private JButton botaoMostrarReturn = new JButton("<--");
     
     AppPanel() {
@@ -248,6 +252,9 @@ public class AppPanel extends JPanel implements Runnable {
         infoMostrarCaixaTexto.setBounds(MEIO - 200 + 40, 0, 400, 100);
         infoMostrarCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
         painelMostrar.add(infoMostrarCaixaTexto);
+
+        painelScrollMostrarUsuarios.setBounds(MEIO - 200, 90, 400, 385);
+        painelMostrar.add(painelScrollMostrarUsuarios);
 
         botaoMostrarReturn.setBounds(10, 10, 75, 25);
         botaoMostrarReturn.setFont(new Font("Arial", Font.BOLD, 15));
