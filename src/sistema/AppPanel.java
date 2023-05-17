@@ -28,10 +28,10 @@ public class AppPanel extends JPanel implements Runnable {
     JLabel infoLoginCaixaTexto = new JLabel("LOGIN");
 
     JLabel loginCaixaTexto = new JLabel("Email:");
-    private JTextField userLoginCaixaTexto = new JTextField("user@email.com");
+    private JTextField userLoginCaixaTexto = new JTextField("usuario@email.com");
 
     JLabel senhaCaixaTexto = new JLabel("Senha:");
-    private JTextField userSenhaCaixaTexto = new JTextField("password");
+    private JTextField userSenhaCaixaTexto = new JTextField("senha");
 
     private JButton botaoEntrar = new JButton("ENTRAR");
     private JButton botaoLoginReturn = new JButton("<--");
@@ -45,10 +45,10 @@ public class AppPanel extends JPanel implements Runnable {
     private JTextField userCadastroNomeCaixaTexto = new JTextField("Nome Sobrenome");
 
     JLabel cadastroLoginCaixaTexto = new JLabel("Email:");
-    private JTextField userCadastroLoginCaixaTexto = new JTextField("user@email.com");
+    private JTextField userCadastroLoginCaixaTexto = new JTextField("usuario@email.com");
 
     JLabel cadastroSenhaCaixaTexto = new JLabel("Senha:");
-    private JTextField userCadastroSenhaCaixaTexto = new JTextField("password");
+    private JTextField userCadastroSenhaCaixaTexto = new JTextField("senha");
 
     private JButton botaoCadastrar = new JButton("CADASTRAR");
     private JButton botaoCadastroReturn = new JButton("<--");
@@ -82,6 +82,15 @@ public class AppPanel extends JPanel implements Runnable {
     //***painelEmail***/
     private JPanel painelEmail = new JPanel();
 
+    JLabel infoEmailCaixaTexto = new JLabel("Nova Mensagem");
+
+    private JTextField emailDestinatarioCaixaTexto = new JTextField("usuario@email.com");
+    private JTextField emailCorpoCaixaTexto = new JTextField("Corpo texto");
+
+    private JButton botaoEnviarEmail = new JButton("Enviar Email");
+
+    private JButton botaoEmailReturn = new JButton("Cancelar");
+
     AppPanel() {
         this.setLayout(null);
         this.setFocusable(true);
@@ -104,6 +113,9 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent arg0) {
                 painelEntrada.setBounds(0, 0, 0, 0);
                 painelCadastro.setBounds(0, 0, LARGURA, ALTURA);
+                userCadastroNomeCaixaTexto.setText("Nome Sobrenome");
+                userCadastroLoginCaixaTexto.setText("usuario@email.com");
+                userCadastroSenhaCaixaTexto.setText("senha123");
             }
         });
 
@@ -126,6 +138,8 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent arg0) {
                 painelEntrada.setBounds(0, 0, 0, 0);
                 painelLogin.setBounds(0, 0, LARGURA, ALTURA);
+                userLoginCaixaTexto.setText("usuario@email.com");
+                userSenhaCaixaTexto.setText("senha123");
             }
         });
     //*********************************************************/
@@ -300,17 +314,6 @@ public class AppPanel extends JPanel implements Runnable {
         painelScrollUsuarioEmails.setBounds(15, 70, 600, 415);
         painelUsuario.add(painelScrollUsuarioEmails);
 
-        botaoUsuarioReturn.setBounds(790, 10, 100, 25);
-        botaoUsuarioReturn.setFont(new Font("Arial", Font.BOLD, 15));
-        painelUsuario.add(botaoUsuarioReturn);
-
-        botaoUsuarioReturn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                painelUsuario.setBounds(0, 0, 0, 0);
-                painelLogin.setBounds(0, 0, LARGURA, ALTURA);
-            }
-        });
-
         botaoNovoEmail.setBounds(650, 150, 216, 25);
         botaoNovoEmail.setFont(new Font("Arial", Font.PLAIN, 17));
         painelUsuario.add(botaoNovoEmail);
@@ -319,6 +322,8 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent arg0) {
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
+                emailDestinatarioCaixaTexto.setText("usuario@email.com");
+                emailCorpoCaixaTexto.setText("Corpo Texto");
             }
         });
 
@@ -342,6 +347,8 @@ public class AppPanel extends JPanel implements Runnable {
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
                 responderEmailCaixaTexto.setText("");
+                emailDestinatarioCaixaTexto.setText("usuario@email.com");
+                emailCorpoCaixaTexto.setText("Corpo Texto");
             }
         });
 
@@ -363,6 +370,72 @@ public class AppPanel extends JPanel implements Runnable {
         botaoRemoverEmail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 removerEmailCaixaTexto.setText("");
+            }
+        });
+
+        botaoUsuarioReturn.setBounds(790, 10, 100, 25);
+        botaoUsuarioReturn.setFont(new Font("Arial", Font.BOLD, 15));
+        painelUsuario.add(botaoUsuarioReturn);
+
+        botaoUsuarioReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                painelUsuario.setBounds(0, 0, 0, 0);
+                painelLogin.setBounds(0, 0, LARGURA, ALTURA);
+                userLoginCaixaTexto.setText("usuario@email.com");
+                userSenhaCaixaTexto.setText("senha123");
+            }
+        });
+    //*********************************************************/
+
+    //************************painelEmail**********************/
+        painelEmail.setLayout(null);
+        this.add(painelEmail);
+
+        infoEmailCaixaTexto.setBounds(10, 10, 200, 100);
+        infoEmailCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 16));
+        painelEmail.add(infoEmailCaixaTexto);
+
+        emailDestinatarioCaixaTexto.setBounds(10, 100, 200, 20);
+        painelEmail.add(emailDestinatarioCaixaTexto);
+
+        emailDestinatarioCaixaTexto.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                JTextField source = (JTextField)e.getComponent();
+                source.setText("");
+                source.removeFocusListener(this);
+            }
+        });
+
+        emailCorpoCaixaTexto.setBounds(10, 150, 880, 305);
+        painelEmail.add(emailCorpoCaixaTexto);
+
+        emailCorpoCaixaTexto.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                JTextField source = (JTextField)e.getComponent();
+                source.setText("");
+                source.removeFocusListener(this);
+            }
+        });
+
+        botaoEnviarEmail.setBounds(734, 465, 156, 25);
+        botaoEnviarEmail.setFont(new Font("Arial", Font.PLAIN, 16));
+        painelEmail.add(botaoEnviarEmail);
+
+        botaoEnviarEmail.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                emailDestinatarioCaixaTexto.setText("");
+                emailCorpoCaixaTexto.setText("");
+            }
+        });
+
+        botaoEmailReturn.setBounds(10, 10, 100, 25);
+        botaoEmailReturn.setFont(new Font("Arial", Font.PLAIN, 16));
+        painelEmail.add(botaoEmailReturn);
+
+        botaoEmailReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                painelEmail.setBounds(0, 0, 0, 0);
+                painelUsuario.setBounds(0, 0, LARGURA, ALTURA);
             }
         });
     //*********************************************************/
