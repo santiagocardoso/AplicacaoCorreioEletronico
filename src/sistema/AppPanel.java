@@ -5,11 +5,21 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import negocio.*;
+import dados.*;
+
 public class AppPanel extends JPanel implements Runnable {
     static final int LARGURA = 900;
     static final int ALTURA = 500;
     static final int MEIO = 900 / 2;
     static final Dimension TELA = new Dimension(LARGURA, ALTURA);
+
+    private static Sistema sistema = new Sistema();
+
+    Usuario userLogin;
 
     Thread appThread;
 
@@ -58,7 +68,9 @@ public class AppPanel extends JPanel implements Runnable {
 
     JLabel infoMostrarCaixaTexto = new JLabel("USUÁRIOS ATIVOS");
 
-    private JScrollPane painelScrollMostrarUsuarios = new JScrollPane();
+    private JScrollPane painelScrollTabelaUsuarios = new JScrollPane();
+    private JTable tabelaUsuarios;
+    private TabelaUsuarios usuarios = new TabelaUsuarios();
 
     private JButton botaoMostrarReturn = new JButton("<--");
 
@@ -186,11 +198,18 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoEntrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                userLoginCaixaTexto.setText("");
-                userSenhaCaixaTexto.setText("");
-                painelEntrada.setBounds(0, 0, 0, 0);
-                painelLogin.setBounds(0, 0, 0, 0);
-                painelUsuario.setBounds(0, 0, LARGURA, ALTURA);
+                String email = userCadastroLoginCaixaTexto.getText();
+                String senha = userCadastroSenhaCaixaTexto.getText();
+                if (sistema.loginUsuario(email, senha)) {
+                    userLogin = sistema.buscarUsuario(email);
+
+                    painelEntrada.setBounds(0, 0, 0, 0);
+                    painelLogin.setBounds(0, 0, 0, 0);
+                    painelUsuario.setBounds(0, 0, LARGURA, ALTURA);
+                }
+
+                userLoginCaixaTexto.setText("ERROR");
+                userSenhaCaixaTexto.setText("ERROR");
             }
         });
 
@@ -262,9 +281,18 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoCadastrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                userCadastroNomeCaixaTexto.setText("");
-                userCadastroLoginCaixaTexto.setText("");
-                userCadastroSenhaCaixaTexto.setText("");
+                Usuario u = new Usuario();
+
+                u.setEnderecoEmail((userCadastroLoginCaixaTexto.getText()));
+                u.setSenha(userCadastroSenhaCaixaTexto.getText());
+                u.setUsuario(userCadastroNomeCaixaTexto.getText());
+                sistema.cadastrarUsuario(u);
+
+                usuarios.adicionarValor(u);
+
+                userCadastroNomeCaixaTexto.setText("Nome Sobrenome");
+                userCadastroLoginCaixaTexto.setText("usuario@email.com");
+                userCadastroSenhaCaixaTexto.setText("senha123");
             }
         });
 
@@ -288,8 +316,11 @@ public class AppPanel extends JPanel implements Runnable {
         infoMostrarCaixaTexto.setFont(new Font("Arial", Font.BOLD, 30));
         painelMostrar.add(infoMostrarCaixaTexto);
 
-        painelScrollMostrarUsuarios.setBounds(MEIO - 200, 90, 400, 385);
-        painelMostrar.add(painelScrollMostrarUsuarios);
+        painelScrollTabelaUsuarios.setBounds(MEIO - 200, 90, 400, 385);
+        painelMostrar.add(painelScrollTabelaUsuarios);
+
+        tabelaUsuarios = new JTable(usuarios);
+        painelScrollTabelaUsuarios.setViewportView(tabelaUsuarios);
 
         botaoMostrarReturn.setBounds(10, 10, 75, 25);
         botaoMostrarReturn.setFont(new Font("Arial", Font.BOLD, 15));
@@ -333,6 +364,20 @@ public class AppPanel extends JPanel implements Runnable {
         responderEmailCaixaTexto.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
+                
+                Email email = new Email();
+
+                email.setRemetente(userLogin.getEnderecoEmail());
+                email.setDestinatario(emailDestinatarioCaixaTexto.getText());
+                email.setCorpo(emailCorpoCaixaTexto.getText());
+                Date dataHoraAtual = new Date();
+                String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
+                email.setData(data);
+                String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
+                email.setHora(hora);
+
+                sistema.enviarEmail(email);
+
                 source.setText("");
                 source.removeFocusListener(this);
             }
