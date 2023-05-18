@@ -33,4 +33,3 @@ public class TabelaUsuarios extends AbstractTableModel {
 		fireTableStructureChanged();
 	}
 }
-

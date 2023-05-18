@@ -71,6 +71,13 @@ public class Usuario {
         }
         return null;
     }
+    public Email buscarEmailID(int id) {
+        for (Email e : emails) {
+            if (e.getId() == id)
+                return e;
+        }
+        return null;
+    }
     public String encriptar(String mensagem, int cifra) {
         String encriptado = "";
         for (int i = 0; i < mensagem.length(); i++) {

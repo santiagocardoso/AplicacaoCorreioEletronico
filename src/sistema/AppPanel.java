@@ -17,12 +17,12 @@ public class AppPanel extends JPanel implements Runnable {
     static final int MEIO = 900 / 2;
     static final Dimension TELA = new Dimension(LARGURA, ALTURA);
 
-    private static Sistema sistema = new Sistema();
+    private Sistema sistema = new Sistema();
 
-    Usuario userLogin;
+    Usuario userLogin = new Usuario();
 
     Thread appThread;
-
+    
     //***painelEntrada***/
     private JPanel painelEntrada = new JPanel();
 
@@ -80,6 +80,8 @@ public class AppPanel extends JPanel implements Runnable {
     JLabel infoUsuarioCaixaTexto = new JLabel("[POO-Mail]");
 
     private JScrollPane painelScrollUsuarioEmails = new JScrollPane();
+    private JTable tabelaEmails;
+    private TabelaEmails emails;
 
     private JButton botaoNovoEmail = new JButton("Enviar email");
 
@@ -174,7 +176,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -188,7 +189,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -198,16 +198,19 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoEntrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                String email = userCadastroLoginCaixaTexto.getText();
-                String senha = userCadastroSenhaCaixaTexto.getText();
+                String email = userLoginCaixaTexto.getText();
+                String senha = userSenhaCaixaTexto.getText();
                 if (sistema.loginUsuario(email, senha)) {
                     userLogin = sistema.buscarUsuario(email);
+                    emails = new TabelaEmails(userLogin);
+                    emails.adicionarValor();
+                    tabelaEmails = new JTable(emails);
+                    painelScrollUsuarioEmails.setViewportView(tabelaEmails);
 
                     painelEntrada.setBounds(0, 0, 0, 0);
                     painelLogin.setBounds(0, 0, 0, 0);
                     painelUsuario.setBounds(0, 0, LARGURA, ALTURA);
                 }
-
                 userLoginCaixaTexto.setText("ERROR");
                 userSenhaCaixaTexto.setText("ERROR");
             }
@@ -243,7 +246,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -257,7 +259,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -271,7 +272,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -364,22 +364,7 @@ public class AppPanel extends JPanel implements Runnable {
         responderEmailCaixaTexto.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
-                
-                Email email = new Email();
-
-                email.setRemetente(userLogin.getEnderecoEmail());
-                email.setDestinatario(emailDestinatarioCaixaTexto.getText());
-                email.setCorpo(emailCorpoCaixaTexto.getText());
-                Date dataHoraAtual = new Date();
-                String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
-                email.setData(data);
-                String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
-                email.setHora(hora);
-
-                sistema.enviarEmail(email);
-
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -388,12 +373,12 @@ public class AppPanel extends JPanel implements Runnable {
         painelUsuario.add(botaoResponderEmail);
 
         botaoResponderEmail.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent a1rg0) {
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
-                responderEmailCaixaTexto.setText("");
-                emailDestinatarioCaixaTexto.setText("usuario@email.com");
-                emailCorpoCaixaTexto.setText("Corpo Texto");
+                emailDestinatarioCaixaTexto.setText(userLogin.buscarEmailID(Integer.parseInt(responderEmailCaixaTexto.getText())).getRemetente());
+                emailCorpoCaixaTexto.setText("Corpo Texto");;
+                responderEmailCaixaTexto.setText("ID Email");
             }
         });
 
@@ -404,7 +389,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -414,7 +398,9 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoRemoverEmail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                removerEmailCaixaTexto.setText("");
+                userLogin.removerEmail(userLogin.getEmails().get(Integer.parseInt(removerEmailCaixaTexto.getText())));
+                emails.atualizar();
+                removerEmailCaixaTexto.setText("ID Email");
             }
         });
 
@@ -447,7 +433,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -458,7 +443,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
-                source.removeFocusListener(this);
             }
         });
 
@@ -468,8 +452,21 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoEnviarEmail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                emailDestinatarioCaixaTexto.setText("");
-                emailCorpoCaixaTexto.setText("");
+                Email email = new Email();
+
+                email.setRemetente(userLogin.getEnderecoEmail());
+                email.setDestinatario(emailDestinatarioCaixaTexto.getText());
+                email.setCorpo(emailCorpoCaixaTexto.getText());
+                Date dataHoraAtual = new Date();
+                String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
+                email.setData(data);
+                String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
+                email.setHora(hora);
+
+                sistema.enviarEmail(email);
+
+                emailDestinatarioCaixaTexto.setText("usuario@email.com");
+                emailCorpoCaixaTexto.setText("Corpo Texto");
             }
         });
 
@@ -481,6 +478,7 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent arg0) {
                 painelEmail.setBounds(0, 0, 0, 0);
                 painelUsuario.setBounds(0, 0, LARGURA, ALTURA);
+                responderEmailCaixaTexto.setText("ID Email");
             }
         });
     //*********************************************************/

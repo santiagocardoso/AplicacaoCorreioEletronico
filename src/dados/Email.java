@@ -65,7 +65,7 @@ public class Email {
     }
 
     public String toString() {
-        return "Email [" + this.id + "]" + "\nRemetente: " + this.remetente + "\nDestinatario: " + this.destinatario + "\nMensagem: " + this.corpo + "\nData: " + this.data + "\nHora: " + this.hora;
+        return "[" + this.id + "] " + this.remetente + " | Email: " + this.corpo + " | Data: " + this.data + " - " + this.hora;
     }
     public boolean equals(Object o) {
         Email e;

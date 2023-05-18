@@ -8,9 +8,6 @@ import dados.*;
 public class Sistema {
     private List<Usuario> usuarios = new ArrayList<Usuario>();
 
-    public void limparValores() {
-		this.usuarios.clear();
-	}
     public void cadastrarUsuario(Usuario usuario) {
         if (!(usuarios.contains(usuario)))
             usuarios.add(usuario);
