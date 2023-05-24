@@ -41,9 +41,10 @@ public class AppPanel extends JPanel implements Runnable {
     private JTextField userLoginCaixaTexto = new JTextField("usuario@email.com");
 
     JLabel senhaCaixaTexto = new JLabel("Senha:");
-    private JTextField userSenhaCaixaTexto = new JTextField("senha");
+    JTextField passwordFieldLogin = new JPasswordField("Senha:");
 
     private JButton botaoEntrar = new JButton("ENTRAR");
+    JLabel loginFracassado = new JLabel("Login fracassado!");
     private JButton botaoLoginReturn = new JButton("<--");
 
     //***painelCadastro***/
@@ -58,9 +59,13 @@ public class AppPanel extends JPanel implements Runnable {
     private JTextField userCadastroLoginCaixaTexto = new JTextField("usuario@email.com");
 
     JLabel cadastroSenhaCaixaTexto = new JLabel("Senha:");
-    private JTextField userCadastroSenhaCaixaTexto = new JTextField("senha");
+    JTextField passwordFieldCadastro = new JPasswordField("Senha:");
 
     private JButton botaoCadastrar = new JButton("CADASTRAR");
+
+    JLabel cadastroRealizado = new JLabel("Cadastro realizado!");
+    JLabel cadastroFracassado = new JLabel("Cadastro fracassado!");
+
     private JButton botaoCadastroReturn = new JButton("<--");
 
     //***painelMostrar***/
@@ -129,7 +134,7 @@ public class AppPanel extends JPanel implements Runnable {
                 painelCadastro.setBounds(0, 0, LARGURA, ALTURA);
                 userCadastroNomeCaixaTexto.setText("Nome Sobrenome");
                 userCadastroLoginCaixaTexto.setText("usuario@email.com");
-                userCadastroSenhaCaixaTexto.setText("senha123");
+                passwordFieldCadastro.setText("senha123");
             }
         });
 
@@ -153,7 +158,7 @@ public class AppPanel extends JPanel implements Runnable {
                 painelEntrada.setBounds(0, 0, 0, 0);
                 painelLogin.setBounds(0, 0, LARGURA, ALTURA);
                 userLoginCaixaTexto.setText("usuario@email.com");
-                userSenhaCaixaTexto.setText("senha123");
+                passwordFieldLogin.setText("senha123");
             }
         });
     //*********************************************************/
@@ -182,10 +187,10 @@ public class AppPanel extends JPanel implements Runnable {
         senhaCaixaTexto.setBounds(MEIO - 100, 200, 100, 100);
         senhaCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 15));
         painelLogin.add(senhaCaixaTexto);
-        userSenhaCaixaTexto.setBounds(MEIO - 100, 275, 200, 20);
-        painelLogin.add(userSenhaCaixaTexto);
+        passwordFieldLogin.setBounds(MEIO - 100, 275, 200, 20);
+        painelLogin.add(passwordFieldLogin);
 
-        userSenhaCaixaTexto.addFocusListener(new FocusAdapter() {
+        passwordFieldLogin.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
@@ -199,7 +204,7 @@ public class AppPanel extends JPanel implements Runnable {
         botaoEntrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 String email = userLoginCaixaTexto.getText();
-                String senha = userSenhaCaixaTexto.getText();
+                String senha = passwordFieldLogin.getText();
                 if (sistema.loginUsuario(email, senha)) {
                     userLogin = sistema.buscarUsuario(email);
                     emails = new TabelaEmails(userLogin);
@@ -210,9 +215,13 @@ public class AppPanel extends JPanel implements Runnable {
                     painelEntrada.setBounds(0, 0, 0, 0);
                     painelLogin.setBounds(0, 0, 0, 0);
                     painelUsuario.setBounds(0, 0, LARGURA, ALTURA);
+                } 
+                else {
+                    loginFracassado.setFont(new Font("Arial", Font.BOLD, 20));
+                    loginFracassado.setForeground(Color.red);
+                    painelLogin.add(loginFracassado);
+                    loginFracassado.setBounds(MEIO - 90, 400, 200, 20);
                 }
-                userLoginCaixaTexto.setText("ERROR");
-                userSenhaCaixaTexto.setText("ERROR");
             }
         });
 
@@ -222,6 +231,7 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoLoginReturn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                loginFracassado.setBounds(MEIO - 90, 400, 0, 0);
                 painelEntrada.setBounds(0, 0, LARGURA, ALTURA);
                 painelLogin.setBounds(0, 0, 0, 0);
             }
@@ -265,10 +275,11 @@ public class AppPanel extends JPanel implements Runnable {
         cadastroSenhaCaixaTexto.setBounds(MEIO - 100, 275, 100, 100);
         cadastroSenhaCaixaTexto.setFont(new Font("Arial", Font.PLAIN, 15));
         painelCadastro.add(cadastroSenhaCaixaTexto);
-        userCadastroSenhaCaixaTexto.setBounds(MEIO - 100, 350, 200, 20);
-        painelCadastro.add(userCadastroSenhaCaixaTexto);
+        passwordFieldCadastro.setBounds(MEIO - 100, 350, 200, 20);
+        passwordFieldCadastro.setFont(new Font("Arial", Font.PLAIN, 15));
+        painelCadastro.add(passwordFieldCadastro);
 
-        userCadastroSenhaCaixaTexto.addFocusListener(new FocusAdapter() {
+        passwordFieldCadastro.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
                 JTextField source = (JTextField)e.getComponent();
                 source.setText("");
@@ -284,15 +295,31 @@ public class AppPanel extends JPanel implements Runnable {
                 Usuario u = new Usuario();
 
                 u.setEnderecoEmail((userCadastroLoginCaixaTexto.getText()));
-                u.setSenha(userCadastroSenhaCaixaTexto.getText());
+                u.setSenha(passwordFieldCadastro.getText());
                 u.setUsuario(userCadastroNomeCaixaTexto.getText());
-                sistema.cadastrarUsuario(u);
+
+                cadastroRealizado.setFont(new Font("Arial", Font.BOLD, 20));
+                cadastroRealizado.setForeground(Color.green);
+                painelCadastro.add(cadastroRealizado);
+
+                cadastroFracassado.setFont(new Font("Arial", Font.BOLD, 20));
+                cadastroFracassado.setForeground(Color.red);
+                painelCadastro.add(cadastroFracassado);
+
+                if (sistema.cadastrarUsuario(u)) {
+                    cadastroFracassado.setBounds(MEIO - 90, 0, 0, 0);
+                    cadastroRealizado.setBounds(MEIO - 90, 465, 200, 20);
+                }
+                else {
+                    cadastroRealizado.setBounds(MEIO - 90, 0, 0, 0);
+                    cadastroFracassado.setBounds(MEIO - 100, 465, 210, 20);
+                }
 
                 usuarios.adicionarValor(u);
 
                 userCadastroNomeCaixaTexto.setText("Nome Sobrenome");
                 userCadastroLoginCaixaTexto.setText("usuario@email.com");
-                userCadastroSenhaCaixaTexto.setText("senha123");
+                passwordFieldCadastro.setText("senha123");
             }
         });
 
@@ -410,10 +437,11 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoUsuarioReturn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                loginFracassado.setBounds(MEIO - 90, 400, 0, 0);
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelLogin.setBounds(0, 0, LARGURA, ALTURA);
                 userLoginCaixaTexto.setText("usuario@email.com");
-                userSenhaCaixaTexto.setText("senha123");
+                passwordFieldLogin.setText("senha123");
             }
         });
     //*********************************************************/

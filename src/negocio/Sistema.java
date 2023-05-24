@@ -8,11 +8,12 @@ import dados.*;
 public class Sistema {
     private List<Usuario> usuarios = new ArrayList<Usuario>();
 
-    public void cadastrarUsuario(Usuario usuario) {
-        if (!(usuarios.contains(usuario)))
+    public boolean cadastrarUsuario(Usuario usuario) {
+        if (!(usuarios.contains(usuario))) {
             usuarios.add(usuario);
-        else
-            return;
+            return true;
+        }
+        return false;
     }
     public List<Usuario> getUsuarios() {
         return usuarios;            
@@ -25,9 +26,9 @@ public class Sistema {
     }
     public boolean loginUsuario(String enderecoEmail, String senha) {
         Usuario idUsuario = buscarUsuario(enderecoEmail);
-        if (idUsuario.getEnderecoEmail().equals(enderecoEmail) 
-        && idUsuario.getSenha().equals(senha) 
-        && idUsuario != null)
+        if (idUsuario != null 
+        && idUsuario.getEnderecoEmail().equals(enderecoEmail) 
+        && idUsuario.getSenha().equals(senha))
             return true;
         return false;
     }
