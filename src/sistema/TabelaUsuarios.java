@@ -1,35 +1,56 @@
 package sistema;
 
+import java.sql.SQLException;
+
 import javax.swing.table.AbstractTableModel;
 
 import dados.*;
 import negocio.*;
+import exceptions.*;
 
 public class TabelaUsuarios extends AbstractTableModel {
     private String[] colunas = {"Usuários"};
+    private Sistema sistema;
 
-    private Sistema sistema = new Sistema();
+    public TabelaUsuarios() throws ClassNotFoundException, SQLException, SelectException {
+        sistema = new Sistema("postgres");
+    }
 
     public String getColumnName(int column) {
-		return colunas[column];
+        return colunas[column];
     }
+
     @Override
     public int getColumnCount() {
         return 1;
     }
+
     @Override
     public int getRowCount() {
-        return sistema.getUsuarios().size();
+        try {
+            return sistema.selectAll().size();
+        } catch (SelectException e) {
+            System.err.println("Não foi possível pegar o RowCount!");
+        }
+        return 0;
     }
+
     @Override
     public Object getValueAt(int linha, int coluna) {
-        return sistema.getUsuarios().get(linha);
-    };
-    public int getRowAt() {
-		return sistema.getUsuarios().size();
-	}
-	public void adicionarValor(Usuario u) {
-		sistema.cadastrarUsuario(u);
-		fireTableStructureChanged();
-	}
+        try {
+            return sistema.selectAll().get(linha);
+        } catch (SelectException e) {
+            System.err.println("Não foi possível pegar o ValueAt!");
+        }
+        return null;
+    }
+
+    public int getRowAt() throws SelectException {
+        return sistema.selectAll().size();
+    }
+
+    public void adicionarValor(Usuario u) throws InsertException, SelectException {
+        sistema.inserirUsuario(u);
+        fireTableStructureChanged();
+    }
 }

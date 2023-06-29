@@ -19,6 +19,7 @@ public class Conexao {
             String usuario = "postgres";
             Class.forName("org.postgresql.Driver");
             conexao = DriverManager.getConnection(url, usuario, senha);
+            System.out.println("Conexão estabelecida!");
         }
         return conexao;
     }

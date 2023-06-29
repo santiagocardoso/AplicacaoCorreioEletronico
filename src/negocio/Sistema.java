@@ -1,47 +1,58 @@
 package negocio;
 
-import java.util.ArrayList;
+import java.sql.*;
 import java.util.List;
 
+import exceptions.*;
 import dados.*;
+import persistencia.*;
 
 public class Sistema {
-    private List<Usuario> usuarios = new ArrayList<Usuario>();
+    private UsuarioDAO usuarioDAO;
+    private EmailDAO emailDAO;
 
-    public boolean cadastrarUsuario(Usuario usuario) {
-        if (!(usuarios.contains(usuario))) {
-            usuarios.add(usuario);
+    public Sistema(String senha) throws ClassNotFoundException, SQLException, SelectException {
+        Conexao.setSenha(senha);
+        usuarioDAO = UsuarioDAO.getInstance();
+        emailDAO = EmailDAO.getInstance();
+    }
+
+    public boolean inserirUsuario(Usuario usuario) throws InsertException, SelectException {
+        if (usuarioDAO.insert(usuario))
             return true;
-        }
         return false;
     }
-    public List<Usuario> getUsuarios() {
-        return usuarios;            
+    public List<Usuario> getUsuarios() throws SelectException {
+        return usuarioDAO.selectAll();
+    }
+    public List<Email> getEmails() throws SelectException {
+        return emailDAO.selectAll();
     }
     public Usuario buscarUsuario(String email) {
-        for (Usuario u : usuarios)
-            if (u.getEnderecoEmail().equals(email))
-                return u;
+        try {
+            for (Usuario u : usuarioDAO.selectAll()) {
+                if (u.getEnderecoEmail().equals(email))
+                    return usuarioDAO.select(u.getId());
+            }
+        } catch (SelectException e) {
+            System.err.println("Exception: " + e);
+        }
         return null;
     }
-    public boolean loginUsuario(String enderecoEmail, String senha) {
-        Usuario idUsuario = buscarUsuario(enderecoEmail);
+    public boolean loginUsuario(String email, String senha) {
+        Usuario idUsuario = buscarUsuario(email);
         if (idUsuario != null 
-        && idUsuario.getEnderecoEmail().equals(enderecoEmail) 
+        && idUsuario.getEnderecoEmail().equals(email) 
         && idUsuario.getSenha().equals(senha))
             return true;
         return false;
     }
     public boolean enviarEmail(Email email) {
         Usuario destinatario = buscarUsuario(email.getDestinatario());
-        if (destinatario.getEnderecoEmail().equals(email.getDestinatario()) 
-        && destinatario != null) {
-            destinatario.adicionarEmail(email);
+        if (destinatario != null && destinatario.getId() == email.getIdDestinatario()) {
+            usuarioDAO.adicionarEmail(email);
             return true;
         }
         return false;
-    }
-    public void descriptarEmail(Usuario usuario, Email email) {
-        usuario.cifraCesar(email, false);
     }
 }

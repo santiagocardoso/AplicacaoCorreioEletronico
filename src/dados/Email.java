@@ -11,13 +11,6 @@ public class Email {
     private int idDestinatario;
 
     public Email() {}
-    public Email(String remetente, String destinatario, String corpo, String data, String hora) {
-        this.remetente = remetente;
-        this.destinatario = destinatario;
-        this.corpo = corpo;
-        this.data = data;
-        this.hora = hora;
-    }
     public Email(int id, String remetente, String destinatario, String corpo, String data, String hora, 
                  int idUsuario, int idDestinatario) {
         this.id = id;
@@ -28,14 +21,6 @@ public class Email {
         this.hora = hora;
         this.idUsuario = idUsuario;
         this.idDestinatario = idDestinatario;
-    }
-    public Email(Email copia) {
-        this.remetente = copia.remetente;
-        this.destinatario = copia.destinatario;
-        this.corpo = copia.corpo;
-        this.data = copia.data;
-        this.hora = copia.hora;
-        this.id = copia.id;
     }
 
     public String getRemetente() {
@@ -95,12 +80,7 @@ public class Email {
         if (!(o instanceof Email))
             return false;
         e = (Email) o;
-        if (this.remetente.equals(e.getRemetente()) 
-        && this.destinatario.equals(e.getDestinatario()) 
-        && this.corpo.equals(e.getCorpo()) 
-        && this.data.equals(e.getData()) 
-        && this.hora.equals(e.getHora()) 
-        && this.id == e.getId())
+        if (this.id == e.getId())
             return true;
         return false;
     }

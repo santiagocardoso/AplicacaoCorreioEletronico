@@ -3,13 +3,11 @@ package sistema;
 import javax.swing.table.AbstractTableModel;
 
 import dados.*;
-import negocio.*;
+import exceptions.SelectException;
 
 public class TabelaEmails extends AbstractTableModel {
     private String[] colunas = {"Emails"};
     private Usuario usuario;
-
-    Sistema sistema = new Sistema();
 
     public TabelaEmails(Usuario u) {
         this.usuario = u;
@@ -28,16 +26,17 @@ public class TabelaEmails extends AbstractTableModel {
     }
     @Override
     public Object getValueAt(int linha, int coluna) {
-        return usuario.getEmails().get(linha);
+        try {
+            return usuario.getEmails().get(linha);
+        } catch (SelectException e) {
+            e.printStackTrace();
+        }
+        return null;
     };
-    public int getRowAt() {
+    public int getRowAt() throws SelectException {
 		return usuario.getEmails().size();
 	}
 	public void adicionarValor() {
-        for (Email e : usuario.getEmails()) {
-		    usuario.adicionarEmail(e);
-            sistema.descriptarEmail(usuario, e);
-        }
 		fireTableStructureChanged();
 	}
     public void atualizar() {

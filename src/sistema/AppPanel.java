@@ -2,6 +2,7 @@ package sistema;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
@@ -9,7 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import negocio.*;
+import persistencia.EmailDAO;
 import dados.*;
+import exceptions.DeleteException;
+import exceptions.InsertException;
+import exceptions.SelectException;
 
 public class AppPanel extends JPanel implements Runnable {
     static final int LARGURA = 900;
@@ -17,7 +22,8 @@ public class AppPanel extends JPanel implements Runnable {
     static final int MEIO = 900 / 2;
     static final Dimension TELA = new Dimension(LARGURA, ALTURA);
 
-    private Sistema sistema = new Sistema();
+    private Sistema sistema;
+    private EmailDAO emailDAO;
 
     Usuario userLogin = new Usuario();
 
@@ -75,7 +81,7 @@ public class AppPanel extends JPanel implements Runnable {
 
     private JScrollPane painelScrollTabelaUsuarios = new JScrollPane();
     private JTable tabelaUsuarios;
-    private TabelaUsuarios usuarios = new TabelaUsuarios();
+    private TabelaUsuarios usuarios;
 
     private JButton botaoMostrarReturn = new JButton("<--");
 
@@ -114,6 +120,16 @@ public class AppPanel extends JPanel implements Runnable {
         this.setLayout(null);
         this.setFocusable(true);
         this.setPreferredSize(TELA);
+        try {
+            sistema = new Sistema("postgres");
+        } catch (ClassNotFoundException | SQLException | SelectException e) {
+            e.printStackTrace();
+        }
+        try {
+            usuarios = new TabelaUsuarios();
+        } catch (ClassNotFoundException | SQLException | SelectException e) {
+            e.printStackTrace();
+        }
 
     //***********************painelEntrada*********************/
         painelEntrada.setBounds(0, 0, LARGURA, ALTURA);
@@ -306,16 +322,24 @@ public class AppPanel extends JPanel implements Runnable {
                 cadastroFracassado.setForeground(Color.red);
                 painelCadastro.add(cadastroFracassado);
 
-                if (sistema.cadastrarUsuario(u)) {
-                    cadastroFracassado.setBounds(MEIO - 90, 0, 0, 0);
-                    cadastroRealizado.setBounds(MEIO - 90, 465, 200, 20);
-                }
-                else {
-                    cadastroRealizado.setBounds(MEIO - 90, 0, 0, 0);
-                    cadastroFracassado.setBounds(MEIO - 100, 465, 210, 20);
+                try {
+                    if (sistema.inserirUsuario(u)) {
+                        cadastroFracassado.setBounds(MEIO - 90, 0, 0, 0);
+                        cadastroRealizado.setBounds(MEIO - 90, 465, 200, 20);
+                    }
+                    else {
+                        cadastroRealizado.setBounds(MEIO - 90, 0, 0, 0);
+                        cadastroFracassado.setBounds(MEIO - 100, 465, 210, 20);
+                    }
+                } catch (InsertException | SelectException e) {
+                    e.printStackTrace();
                 }
 
-                usuarios.adicionarValor(u);
+                try {
+                    usuarios.adicionarValor(u);
+                } catch (InsertException | SelectException e) {
+                    e.printStackTrace();
+                }
 
                 userCadastroNomeCaixaTexto.setText("Nome Sobrenome");
                 userCadastroLoginCaixaTexto.setText("usuario@email.com");
@@ -403,7 +427,15 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent a1rg0) {
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
-                emailDestinatarioCaixaTexto.setText(userLogin.buscarEmailID(Integer.parseInt(responderEmailCaixaTexto.getText())).getRemetente());
+                try {
+                    for (Email e : emailDAO.selectAll(userLogin.getId())) {
+                        if (e.getId() == (Integer.parseInt(responderEmailCaixaTexto.getText()))) {
+                            emailDestinatarioCaixaTexto.setText(e.getDestinatario());
+                        }
+                    }
+                } catch (NumberFormatException | SelectException e) {
+                    e.printStackTrace();
+                }
                 emailCorpoCaixaTexto.setText("Corpo Texto");;
                 responderEmailCaixaTexto.setText("ID Email");
             }
@@ -425,7 +457,11 @@ public class AppPanel extends JPanel implements Runnable {
 
         botaoRemoverEmail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                userLogin.removerEmail(userLogin.getEmails().get(Integer.parseInt(removerEmailCaixaTexto.getText())));
+                try {
+                    emailDAO.delete(userLogin.getEmails().get(Integer.parseInt(removerEmailCaixaTexto.getText())));
+                } catch (NumberFormatException | DeleteException | SelectException e) {
+                    e.printStackTrace();
+                }
                 emails.atualizar();
                 removerEmailCaixaTexto.setText("ID Email");
             }
