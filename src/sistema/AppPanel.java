@@ -223,8 +223,11 @@ public class AppPanel extends JPanel implements Runnable {
                 String senha = passwordFieldLogin.getText();
                 if (sistema.loginUsuario(email, senha)) {
                     userLogin = sistema.buscarUsuario(email);
-                    emails = new TabelaEmails(userLogin);
-                    emails.adicionarValor();
+                    try {
+                        emails = new TabelaEmails(userLogin);
+                    } catch (ClassNotFoundException | SQLException | SelectException e) {
+                        e.printStackTrace();
+                    }
                     tabelaEmails = new JTable(emails);
                     painelScrollUsuarioEmails.setViewportView(tabelaEmails);
 
@@ -324,6 +327,7 @@ public class AppPanel extends JPanel implements Runnable {
 
                 try {
                     if (sistema.inserirUsuario(u)) {
+                        usuarios.adicionarValor();
                         cadastroFracassado.setBounds(MEIO - 90, 0, 0, 0);
                         cadastroRealizado.setBounds(MEIO - 90, 465, 200, 20);
                     }
@@ -331,16 +335,10 @@ public class AppPanel extends JPanel implements Runnable {
                         cadastroRealizado.setBounds(MEIO - 90, 0, 0, 0);
                         cadastroFracassado.setBounds(MEIO - 100, 465, 210, 20);
                     }
-                } catch (InsertException | SelectException e) {
-                    e.printStackTrace();
+                } catch (InsertException | SelectException | ClassNotFoundException e) {
+                    System.err.println("Erro na inserção do usuário!");
                 }
-
-                try {
-                    usuarios.adicionarValor(u);
-                } catch (InsertException | SelectException e) {
-                    e.printStackTrace();
-                }
-
+                
                 userCadastroNomeCaixaTexto.setText("Nome Sobrenome");
                 userCadastroLoginCaixaTexto.setText("usuario@email.com");
                 passwordFieldCadastro.setText("senha123");
@@ -428,7 +426,7 @@ public class AppPanel extends JPanel implements Runnable {
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
                 try {
-                    for (Email e : emailDAO.selectAll(userLogin.getId())) {
+                    for (Email e : sistema.getEmails(userLogin)) {
                         if (e.getId() == (Integer.parseInt(responderEmailCaixaTexto.getText()))) {
                             emailDestinatarioCaixaTexto.setText(e.getDestinatario());
                         }
@@ -458,7 +456,7 @@ public class AppPanel extends JPanel implements Runnable {
         botaoRemoverEmail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    emailDAO.delete(userLogin.getEmails().get(Integer.parseInt(removerEmailCaixaTexto.getText())));
+                    emailDAO.delete(sistema.getEmails(userLogin).get(Integer.parseInt(removerEmailCaixaTexto.getText())));
                 } catch (NumberFormatException | DeleteException | SelectException e) {
                     e.printStackTrace();
                 }
@@ -518,6 +516,7 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent arg0) {
                 Email email = new Email();
 
+
                 email.setRemetente(userLogin.getEnderecoEmail());
                 email.setDestinatario(emailDestinatarioCaixaTexto.getText());
                 email.setCorpo(emailCorpoCaixaTexto.getText());
@@ -527,7 +526,11 @@ public class AppPanel extends JPanel implements Runnable {
                 String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
                 email.setHora(hora);
 
-                sistema.enviarEmail(email);
+                try {
+                    emailDAO.insert(email);
+                } catch (InsertException | SelectException e) {
+                    e.printStackTrace();
+                }
 
                 emailDestinatarioCaixaTexto.setText("usuario@email.com");
                 emailCorpoCaixaTexto.setText("Corpo Texto");

@@ -9,7 +9,6 @@ import exceptions.*;
 
 public class UsuarioDAO {
     private static UsuarioDAO instance = null;
-    private static List<Email> emails = new LinkedList<>();
 
     private PreparedStatement selectNewId;
     private PreparedStatement select;
@@ -41,20 +40,23 @@ public class UsuarioDAO {
         }
         return 0;
     }
-    public void adicionarEmail(Email email) {
-        emails.add(email);
+    public boolean existe(String email) throws ClassNotFoundException, SQLException, SelectException {
+        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+        for (Usuario u : usuarioDAO.selectAll())
+            if (u.getEnderecoEmail().equals(email))
+                return true;
+        return false;
     }
-    public List<Email> getEmails() {
-        return emails;
-    }
-    public boolean insert(Usuario usuario) throws InsertException, SelectException {
+    public boolean insert(Usuario usuario) throws InsertException, SelectException, ClassNotFoundException {
         try {
-            usuario.setId(selectNewId());
-            insert.setInt(1, usuario.getId());
+            if (existe(usuario.getEnderecoEmail())) {
+                return false;
+            }
+            insert.setInt(1, selectNewId());
             insert.setString(2, usuario.getUsuario());
             insert.setString(3, usuario.getEnderecoEmail());
             insert.setString(4, usuario.getSenha());
-            insert.executeQuery();
+            insert.executeUpdate();
             return true;
         }
         catch (SQLException e) {

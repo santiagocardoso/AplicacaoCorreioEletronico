@@ -1,6 +1,7 @@
 package negocio;
 
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 
 import exceptions.*;
@@ -17,7 +18,7 @@ public class Sistema {
         emailDAO = EmailDAO.getInstance();
     }
 
-    public boolean inserirUsuario(Usuario usuario) throws InsertException, SelectException {
+    public boolean inserirUsuario(Usuario usuario) throws InsertException, SelectException, ClassNotFoundException {
         if (usuarioDAO.insert(usuario))
             return true;
         return false;
@@ -27,6 +28,13 @@ public class Sistema {
     }
     public List<Email> getEmails() throws SelectException {
         return emailDAO.selectAll();
+    }
+    public List<Email> getEmails(Usuario u) throws SelectException {
+        List<Email> emails = new LinkedList<>();
+        for (Email e : emailDAO.selectAll())
+            if (e.getIdUsuario() == u.getId())
+                emails.add(e);
+        return emails;
     }
     public Usuario buscarUsuario(String email) {
         try {
@@ -45,14 +53,6 @@ public class Sistema {
         && idUsuario.getEnderecoEmail().equals(email) 
         && idUsuario.getSenha().equals(senha))
             return true;
-        return false;
-    }
-    public boolean enviarEmail(Email email) {
-        Usuario destinatario = buscarUsuario(email.getDestinatario());
-        if (destinatario != null && destinatario.getId() == email.getIdDestinatario()) {
-            usuarioDAO.adicionarEmail(email);
-            return true;
-        }
         return false;
     }
 }
