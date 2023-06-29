@@ -225,11 +225,11 @@ public class AppPanel extends JPanel implements Runnable {
                     userLogin = sistema.buscarUsuario(email);
                     try {
                         emails = new TabelaEmails(userLogin);
+                        tabelaEmails = new JTable(emails);
+                        painelScrollUsuarioEmails.setViewportView(tabelaEmails);
                     } catch (ClassNotFoundException | SQLException | SelectException e) {
                         e.printStackTrace();
                     }
-                    tabelaEmails = new JTable(emails);
-                    painelScrollUsuarioEmails.setViewportView(tabelaEmails);
 
                     painelEntrada.setBounds(0, 0, 0, 0);
                     painelLogin.setBounds(0, 0, 0, 0);
@@ -516,7 +516,6 @@ public class AppPanel extends JPanel implements Runnable {
             public void actionPerformed(ActionEvent arg0) {
                 Email email = new Email();
 
-
                 email.setRemetente(userLogin.getEnderecoEmail());
                 email.setDestinatario(emailDestinatarioCaixaTexto.getText());
                 email.setCorpo(emailCorpoCaixaTexto.getText());
@@ -525,6 +524,16 @@ public class AppPanel extends JPanel implements Runnable {
                 email.setData(data);
                 String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
                 email.setHora(hora);
+                try {
+                    for (Usuario u : sistema.getUsuarios()) {
+                        if (u.getEnderecoEmail().equals(email.getRemetente()))
+                            email.setIdUsuario(u.getId());
+                        if (u.getEnderecoEmail().equals(email.getDestinatario()))
+                            email.setIdDestinatario(u.getId());
+                    }
+                } catch (SelectException e) {
+                    e.printStackTrace();
+                }
 
                 try {
                     emailDAO.insert(email);

@@ -11,7 +11,7 @@ public class EmailDAO {
     private static EmailDAO instance = null;
 
     private PreparedStatement selectNewId;
-    private PreparedStatement select;
+    private PreparedStatement selectAll;
     private PreparedStatement insert;
     private PreparedStatement delete;
 
@@ -25,7 +25,7 @@ public class EmailDAO {
         Connection conexao = Conexao.getConexao();
         selectNewId = conexao.prepareStatement("select nextval('seq_id_email')");
         insert = conexao.prepareStatement("insert into email values(?,?,?,?,?,?,?,?)");
-        select = conexao.prepareStatement("select * from email where id = ?");
+        selectAll = conexao.prepareStatement("select * from email");
         delete = conexao.prepareStatement("delete from email where id = ?");
     }
 
@@ -50,7 +50,7 @@ public class EmailDAO {
             insert.setString(6, email.getHora());
             insert.setInt(7, email.getIdUsuario());
             insert.setInt(8, email.getIdDestinatario());
-            insert.executeQuery();
+            insert.executeUpdate();
         }
         catch (SQLException e) {
             throw new InsertException("Erro ao inserir email!");
@@ -59,12 +59,12 @@ public class EmailDAO {
     public List<Email> selectAll() throws SelectException {
         List<Email> emails = new LinkedList<>();
         try {
-            ResultSet rs = select.executeQuery();
+            ResultSet rs = selectAll.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt(1);
                 String remetente = rs.getString(2);
                 String destinatario = rs.getString(3);
-                String corpo = descriptar(rs.getString(4), id + (((int) rs.getString(5).charAt(0) - '0') + ((int) rs.getString(5).charAt(1) - '0')));
+                String corpo = descriptar(rs.getString(4), (id + (((int) rs.getString(5).charAt(0) - '0') + ((int) rs.getString(5).charAt(1) - '0'))));
                 String data = rs.getString(5);
                 String hora = rs.getString(6);
                 int idUsuario = rs.getInt(7);
@@ -75,7 +75,7 @@ public class EmailDAO {
             }
         }
         catch (SQLException e) {
-            throw new SelectException("Erro ao buscar email do usuário!");
+            throw new SelectException("Erro ao buscar emails!");
         }
         return emails;
     }

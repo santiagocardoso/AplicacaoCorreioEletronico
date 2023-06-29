@@ -19,9 +19,10 @@ public class TabelaEmails extends AbstractTableModel {
     public TabelaEmails(Usuario u) throws ClassNotFoundException, SQLException, SelectException {
         sistema = new Sistema("postgres");
         this.usuario = u;
-        for (Email e : sistema.getEmails())
-            if (e.getIdUsuario() == usuario.getId())
+        for (Email e : sistema.getEmails()) {
+            if (e.getIdDestinatario() == usuario.getId())
                 emails.add(e);
+        }
     }
 
     public String getColumnName(int column) {
