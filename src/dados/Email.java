@@ -8,6 +8,7 @@ public class Email {
     private String data;
     private String hora;
     private int idUsuario;
+    private int idDestinatario;
 
     public Email() {}
     public Email(String remetente, String destinatario, String corpo, String data, String hora) {
@@ -17,13 +18,16 @@ public class Email {
         this.data = data;
         this.hora = hora;
     }
-    public Email(int id, String remetente, String destinatario, String corpo, String data, String hora) {
+    public Email(int id, String remetente, String destinatario, String corpo, String data, String hora, 
+                 int idUsuario, int idDestinatario) {
         this.id = id;
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.corpo = corpo;
         this.data = data;
         this.hora = hora;
+        this.idUsuario = idUsuario;
+        this.idDestinatario = idDestinatario;
     }
     public Email(Email copia) {
         this.remetente = copia.remetente;
@@ -75,6 +79,12 @@ public class Email {
     }
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
+    }
+    public int getIdDestinatario() {
+        return idDestinatario;
+    }
+    public void setIdDestinatario(int idDestinatario) {
+        this.idDestinatario = idDestinatario;
     }
 
     public String toString() {

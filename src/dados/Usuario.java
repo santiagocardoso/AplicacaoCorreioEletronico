@@ -19,11 +19,12 @@ public class Usuario {
         this.enderecoEmail = enderencoEmail;
         this.senha = senha;
     }
-    public Usuario(int id, String usuario, String enderencoEmail, String senha) {
+    public Usuario(int id, String usuario, String enderencoEmail, String senha, List<Email> emails) {
         this.id = id;
         this.usuario = usuario;
         this.enderecoEmail = enderencoEmail;
         this.senha = senha;
+        this.emails = emails;
     }
 
     public String getUsuario() {

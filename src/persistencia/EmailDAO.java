@@ -1,9 +1,11 @@
 package persistencia;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import dados.*;
-import excepctions.*;
+import exceptions.*;
 
 public class EmailDAO {
     private static EmailDAO instance = null;
@@ -22,7 +24,7 @@ public class EmailDAO {
     private EmailDAO() throws ClassNotFoundException, SQLException, SelectException {
         Connection conexao = Conexao.getConexao();
         selectNewId = conexao.prepareStatement("select nextval('id_email')");
-        insert = conexao.prepareStatement("insert into email values(?,?,?,?,?,?)");
+        insert = conexao.prepareStatement("insert into email values(?,?,?,?,?,?,?)");
         select = conexao.prepareStatement("select * from email where id_usuario = ?");
         delete = conexao.prepareStatement("delete from email where id_usuario = ?");
     }
@@ -53,7 +55,8 @@ public class EmailDAO {
             throw new InsertException("Erro ao inserir email!");
         }
     }
-    public Email select(int usuario) throws SelectException {
+    public List<Email> selectAll(int usuario) throws SelectException {
+        List<Email> emails = new ArrayList<>();
         try {
             select.setInt(1, usuario);
             ResultSet rs = select.executeQuery();
@@ -64,18 +67,22 @@ public class EmailDAO {
                 String corpo = rs.getString(4);
                 String data = rs.getString(5);
                 String hora = rs.getString(6);
-                return new Email(id, remetente, destinatario, corpo, data, hora);
+                int idUsuario = rs.getInt(7);
+                int idDestinatario = rs.getInt(8);
+                
+                Email email = new Email(id, remetente, destinatario, corpo, data, hora, idUsuario, idDestinatario);
+                emails.add(email);
             }
         }
         catch (SQLException e) {
             throw new SelectException("Erro ao buscar email do usuario!");
         }
-        return null;
+        return emails;
     }
     public void delete(Email email) throws DeleteException {
         try {
             delete.setInt(1, email.getIdUsuario());
-            delete.executeQuery();
+            delete.executeUpdate();
         }
         catch (SQLException e) {
             throw new DeleteException("Erro ao deletar email!");

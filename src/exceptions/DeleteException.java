@@ -1,4 +1,4 @@
-package excepctions;
+package exceptions;
 
 public class DeleteException extends Exception {
     public DeleteException(String mensagem) {
