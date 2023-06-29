@@ -1,17 +1,24 @@
 package dados;
 
 public class Email {
+    private int id;
     private String remetente;
     private String destinatario;
     private String corpo;
     private String data;
     private String hora;
-    private int id;
+    private int idUsuario;
 
-    public Email() {
-
-    }
+    public Email() {}
     public Email(String remetente, String destinatario, String corpo, String data, String hora) {
+        this.remetente = remetente;
+        this.destinatario = destinatario;
+        this.corpo = corpo;
+        this.data = data;
+        this.hora = hora;
+    }
+    public Email(int id, String remetente, String destinatario, String corpo, String data, String hora) {
+        this.id = id;
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.corpo = corpo;
@@ -62,6 +69,12 @@ public class Email {
     }
     public void setId(int id) {
         this.id = id;
+    }
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String toString() {

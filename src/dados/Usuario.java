@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
+    private int id;
     private String usuario;
     private String enderecoEmail;
     private String senha;
@@ -14,6 +15,12 @@ public class Usuario {
 
     }
     public Usuario(String usuario, String enderencoEmail, String senha) {
+        this.usuario = usuario;
+        this.enderecoEmail = enderencoEmail;
+        this.senha = senha;
+    }
+    public Usuario(int id, String usuario, String enderencoEmail, String senha) {
+        this.id = id;
         this.usuario = usuario;
         this.enderecoEmail = enderencoEmail;
         this.senha = senha;
@@ -42,6 +49,12 @@ public class Usuario {
     }
     public List<Email> getEmails() {
         return emails;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean adicionarEmail(Email email) {
