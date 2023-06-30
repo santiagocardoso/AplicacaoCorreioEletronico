@@ -10,11 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import negocio.*;
-import persistencia.EmailDAO;
 import dados.*;
-import exceptions.DeleteException;
-import exceptions.InsertException;
-import exceptions.SelectException;
+import exceptions.*;
 
 public class AppPanel extends JPanel implements Runnable {
     static final int LARGURA = 900;
@@ -23,7 +20,6 @@ public class AppPanel extends JPanel implements Runnable {
     static final Dimension TELA = new Dimension(LARGURA, ALTURA);
 
     private Sistema sistema;
-    private EmailDAO emailDAO;
 
     Usuario userLogin = new Usuario();
 
@@ -223,13 +219,9 @@ public class AppPanel extends JPanel implements Runnable {
                 String senha = passwordFieldLogin.getText();
                 if (sistema.loginUsuario(email, senha)) {
                     userLogin = sistema.buscarUsuario(email);
-                    try {
-                        emails = new TabelaEmails(userLogin);
-                        tabelaEmails = new JTable(emails);
-                        painelScrollUsuarioEmails.setViewportView(tabelaEmails);
-                    } catch (ClassNotFoundException | SQLException | SelectException e) {
-                        e.printStackTrace();
-                    }
+                    emails = new TabelaEmails(userLogin);
+                    tabelaEmails = new JTable(emails);
+                    painelScrollUsuarioEmails.setViewportView(tabelaEmails);
 
                     painelEntrada.setBounds(0, 0, 0, 0);
                     painelLogin.setBounds(0, 0, 0, 0);
@@ -426,16 +418,21 @@ public class AppPanel extends JPanel implements Runnable {
                 painelUsuario.setBounds(0, 0, 0, 0);
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
                 try {
-                    for (Email e : sistema.getEmails(userLogin)) {
+                    for (Email e : sistema.getEmails()) {
                         if (e.getId() == (Integer.parseInt(responderEmailCaixaTexto.getText()))) {
-                            emailDestinatarioCaixaTexto.setText(e.getDestinatario());
+                            for (Usuario u : sistema.getUsuarios()) {
+                                if (u.getUsuario().equals(e.getRemetente())) {
+                                    emailDestinatarioCaixaTexto.setText(u.getEnderecoEmail());
+                                    break;
+                                }
+                            }
                         }
                     }
+                    emailCorpoCaixaTexto.setText("Corpo Texto");;
+                    responderEmailCaixaTexto.setText("ID Email");
                 } catch (NumberFormatException | SelectException e) {
                     e.printStackTrace();
                 }
-                emailCorpoCaixaTexto.setText("Corpo Texto");;
-                responderEmailCaixaTexto.setText("ID Email");
             }
         });
 
@@ -456,12 +453,17 @@ public class AppPanel extends JPanel implements Runnable {
         botaoRemoverEmail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    emailDAO.delete(sistema.getEmails(userLogin).get(Integer.parseInt(removerEmailCaixaTexto.getText())));
+                    for (Email e : sistema.getEmails()) {
+                        if (e.getId() == Integer.parseInt(removerEmailCaixaTexto.getText())) {
+                            sistema.deleteEmail(e);
+                            emails.atualizar();
+                            removerEmailCaixaTexto.setText("ID Email");
+                            break;
+                        }
+                    }
                 } catch (NumberFormatException | DeleteException | SelectException e) {
                     e.printStackTrace();
                 }
-                emails.atualizar();
-                removerEmailCaixaTexto.setText("ID Email");
             }
         });
 
@@ -524,21 +526,21 @@ public class AppPanel extends JPanel implements Runnable {
                 email.setData(data);
                 String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
                 email.setHora(hora);
+                email.setIdUsuario(userLogin.getId());
+
                 try {
                     for (Usuario u : sistema.getUsuarios()) {
-                        if (u.getEnderecoEmail().equals(email.getRemetente()))
-                            email.setIdUsuario(u.getId());
-                        if (u.getEnderecoEmail().equals(email.getDestinatario()))
+                        if (u != null && email != null && u.getEnderecoEmail().equals(email.getDestinatario()))
                             email.setIdDestinatario(u.getId());
                     }
                 } catch (SelectException e) {
-                    e.printStackTrace();
+                    System.err.println("Não foi possível encontrar o usuário!");
                 }
 
                 try {
-                    emailDAO.insert(email);
-                } catch (InsertException | SelectException e) {
-                    e.printStackTrace();
+                    sistema.inserirEmail(email);
+                } catch (InsertException | SelectException | ClassNotFoundException e) {
+                    System.err.println("Não foi possível criar o email!");
                 }
 
                 emailDestinatarioCaixaTexto.setText("usuario@email.com");

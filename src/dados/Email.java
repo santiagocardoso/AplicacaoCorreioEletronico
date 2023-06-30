@@ -73,7 +73,7 @@ public class Email {
     }
 
     public String toString() {
-        return "[" + this.id + "] " + this.remetente + " | Email: " + this.corpo + " | Data: " + this.data + " - " + this.hora;
+        return "[" + this.id + "] " + this.remetente + " | Email: " + cifraCesar(this.id, this.data, this.corpo, false) + " | Data: " + this.data + " - " + this.hora;
     }
     public boolean equals(Object o) {
         Email e;
@@ -83,5 +83,63 @@ public class Email {
         if (this.id == e.getId())
             return true;
         return false;
+    }
+
+    public String encriptar(String mensagem, int cifra) {
+        String encriptado = "";
+        for (int i = 0; i < mensagem.length(); i++) {
+            if (!(Character.isLetter(mensagem.charAt(i))))
+                encriptado += mensagem.charAt(i);
+            else {
+                if (!(Character.isUpperCase(mensagem.charAt(i)))) {
+                    if (mensagem.charAt(i) + cifra > 122)
+                        encriptado += (char)(mensagem.charAt(i) + cifra - 26);
+                    else
+                        encriptado += (char)(mensagem.charAt(i) + cifra);
+                }
+                else {
+                    if (mensagem.charAt(i) + cifra > 90)
+                        encriptado += (char)(mensagem.charAt(i) + cifra - 26);
+                    else
+                        encriptado += (char)(mensagem.charAt(i) + cifra);    
+                }
+            }
+        }
+        return encriptado;
+    }
+    public String descriptar(String mensagem, int cifra) {
+        String descriptado = "";
+        for (int i = 0; i < mensagem.length(); i++) {
+            if (!(Character.isLetter(mensagem.charAt(i))))
+                descriptado += mensagem.charAt(i);
+            else {
+                if (!(Character.isUpperCase(mensagem.charAt(i)))) {
+                    if (mensagem.charAt(i) - cifra < 97)
+                        descriptado += (char)(mensagem.charAt(i) - cifra + 26);
+                    else
+                        descriptado += (char)(mensagem.charAt(i) - cifra);
+                }
+                else {
+                    if (mensagem.charAt(i) - cifra < 65)
+                        descriptado += (char)(mensagem.charAt(i) - cifra + 26);
+                    else
+                        descriptado += (char)(mensagem.charAt(i) - cifra);    
+                }
+            }
+        }
+        return descriptado;
+    }
+    // a b c d e f g h i j k l m n o p q r s t u v w x y z
+    // A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+    public String cifraCesar(int id, String data, String corpo, boolean modo) {
+        int dia = ((int) data.charAt(0) - '0') + ((int) data.charAt(1) - '0');
+        int cifra = id + dia;
+
+        System.out.println("Cifra " + id);
+
+        if (modo)
+            return (encriptar(corpo, cifra));
+        else
+            return (descriptar(corpo, cifra));
     }
 }

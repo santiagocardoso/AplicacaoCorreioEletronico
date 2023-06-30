@@ -4,9 +4,7 @@ drop sequence seq_id_usuario;
 drop sequence seq_id_email;
 
 select * from usuario
-select * from usuario where id = 1
 select * from email
-select * from email where id = 2
 
 create sequence seq_id_usuario;
 create sequence seq_id_email;
@@ -26,8 +24,8 @@ create table email (
 	corpo text,
 	dataEmail varchar(10),
 	hora varchar(8),
-	id_usuario integer,
-	id_destinatario integer,
+	id_usuario int,
+	id_destinatario int,
 	primary key (id),
 	foreign key (id_usuario) references usuario (id),
 	foreign key (id_destinatario) references usuario(id)
