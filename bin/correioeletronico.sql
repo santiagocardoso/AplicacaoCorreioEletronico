@@ -31,12 +31,15 @@ create table email (
 	foreign key (id_destinatario) references usuario(id)
 );
 
-insert into usuario values (nextval('seq_id_usuario'), 'Santiago', 'santiago@email.com', '123');
-insert into usuario values (nextval('seq_id_usuario'), 'Pedro', 'pedro@email.com', '321');
-insert into usuario values (nextval('seq_id_usuario'), 'Julia', 'julia@email.com', 'abacate');
-insert into usuario values (nextval('seq_id_usuario'), 'Nome Sobrenome', 'usuario@email.com', 'senha123');
+insert into usuario values (nextval('seq_id_usuario'), 'Santiago Cardoso', 'santiago@email.com', '123');
+insert into usuario values (nextval('seq_id_usuario'), 'Pedro Souza', 'pedro@email.com', 'pedro');
+insert into usuario values (nextval('seq_id_usuario'), 'Julia Vieira', 'julia@email.com', 'julia');
+insert into usuario values (nextval('seq_id_usuario'), 'Caio Junior Silva', 'caio@email.com', 'caio');
+insert into usuario values (nextval('seq_id_usuario'), 'Matheus Fernandes', 'matheus@email.com', 'matheus');
+insert into usuario values (nextval('seq_id_usuario'), 'Gabriela de Almeida', 'gabi@email.com', 'gabi');
+insert into usuario values (nextval('seq_id_usuario'), 'Junior Santos', 'juninho@email.com', 'juninho123');
 
-insert into email values (nextval('seq_id_email'), 'Santiago', 'Nome Sobrenome', 'Essa é a conta admin?', '29/06/2023', '18:34:23', 1, 4);
-insert into email values (nextval('seq_id_email'), 'Santiago', 'Pedro', 'Oie, bom dia!', '28/06/2023', '22:35:51', 1, 2);
-insert into email values (nextval('seq_id_email'), 'Pedro', 'Santiago', 'Eae, tudo certo?', '10/07/2023', '14:12:23', 2, 1);
-insert into email values (nextval('seq_id_email'), 'Julia', 'Santiago', 'Recebeu o email?', '14/02/2024', '03:23:45', 3, 1);
+insert into email values (nextval('seq_id_email'), 'santiago@email.com', 'pedro@email.com', 'Smi, fsq hme!', '30/06/2023', '21:55:23', 1, 2);
+insert into email values (nextval('seq_id_email'), 'santiago@email.com', 'julia@email.com', 'Kje f uwtaf?', '30/06/2023', '14:23:44', 1, 3);
+insert into email values (nextval('seq_id_email'), 'julia@email.com', 'santiago@email.com', 'Kgk, hus jog yos, lkf u wak nupk?', '30/06/2023', '03:19:03', 3, 1);
+insert into email values (nextval('seq_id_email'), 'caio@email.com', 'juninho@email.com', 'Vp Qbupuov, chtvz zhpy hsnbt kph klzzlz', '30/06/2023', '23:59:23', 4, 3);

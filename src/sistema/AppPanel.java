@@ -419,14 +419,8 @@ public class AppPanel extends JPanel implements Runnable {
                 painelEmail.setBounds(0, 0, LARGURA, ALTURA);
                 try {
                     for (Email e : sistema.getEmails()) {
-                        if (e.getId() == (Integer.parseInt(responderEmailCaixaTexto.getText()))) {
-                            for (Usuario u : sistema.getUsuarios()) {
-                                if (u.getUsuario().equals(e.getRemetente())) {
-                                    emailDestinatarioCaixaTexto.setText(u.getEnderecoEmail());
-                                    break;
-                                }
-                            }
-                        }
+                        if (e.getId() == (Integer.parseInt(responderEmailCaixaTexto.getText())))
+                            emailDestinatarioCaixaTexto.setText(e.getRemetente());
                     }
                     emailCorpoCaixaTexto.setText("Corpo Texto");;
                     responderEmailCaixaTexto.setText("ID Email");

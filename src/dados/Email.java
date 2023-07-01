@@ -135,8 +135,6 @@ public class Email {
         int dia = ((int) data.charAt(0) - '0') + ((int) data.charAt(1) - '0');
         int cifra = id + dia;
 
-        System.out.println("Cifra " + id);
-
         if (modo)
             return (encriptar(corpo, cifra));
         else
