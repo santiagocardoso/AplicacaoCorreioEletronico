@@ -82,29 +82,6 @@ public class EmailDAO {
         }
         return emails;
     }
-    public List<Email> selectAllDecriptado() throws SelectException {
-        List<Email> emails = new LinkedList<>();
-        try {
-            ResultSet rs = selectAll.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                String remetente = rs.getString(2);
-                String destinatario = rs.getString(3);
-                String corpo = rs.getString(4);
-                String data = rs.getString(5);
-                String hora = rs.getString(6);
-                int idUsuario = rs.getInt(7);
-                int idDestinatario = rs.getInt(8);
-                
-                Email email = new Email(id, remetente, destinatario, corpo, data, hora, idUsuario, idDestinatario);
-                emails.add(email);
-            }
-        }
-        catch (SQLException e) {
-            throw new SelectException("Erro ao buscar emails!");
-        }
-        return emails;
-    }
     public boolean delete(Email email) throws DeleteException {
         try {
             delete.setInt(1, email.getId());

@@ -49,8 +49,6 @@ public class TabelaUsuarios extends AbstractTableModel {
         return null;
     }
 
-
-
     public int getRowAt() throws SelectException {
         return sistema.getUsuarios().size();
     }
